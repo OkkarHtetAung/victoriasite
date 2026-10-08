@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Victoria's Mind — Creativity</title>
+
+<!--
+  ============================================================
+  PAGE: creativity.html
+  ============================================================
+  FIXES IN THIS VERSION:
+    • Wall layout → CSS columns (no more empty gaps)
+    • Video compressed: preload="none", muted, controls,
+      moved LOWER in the flow so it doesn't load first
+    • Removed backdrop-filter (GPU-heavy) from clusters
+    • Removed heavy box-shadows
+    • Everything still chaotic — sticky notes, wall frames,
+      creation clusters — but dense and lightweight
+  ============================================================
+-->
+
+<script>
+  try {
+    var s = sessionStorage;
+    if (s.getItem('creativityGameDone') === 'true') {
+      document.documentElement.classList.add('popup-seen','lights-done','game-done');
+    } else if (s.getItem('creativityLightsOn') === 'true') {
+      document.documentElement.classList.add('popup-seen','lights-done');
+    } else if (s.getItem('creativityPopupShown') === 'true') {
+      document.documentElement.classList.add('popup-seen');
+    }
+  } catch(e) {}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   1. THEME VARIABLES
+   ============================================================ */
+:root{
+  --pink:   #ff8fb1;
+  --pink-2: #ffc2d6;
+  --peach:  #ffd6a5;
+  --lav:    #c8b6ff;
+  --mint:   #b8f2e6;
+  --sky:    #a9def9;
+  --cream:  #fff8f0;
+  --ink:    #4a3f55;
+  --ink-soft:#8a7f96;
+  --yellow: #ffe066;
+  --card-shadow: 0 10px 30px rgba(90,60,110,.12);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html{ scroll-behavior:smooth; }
+body{
+  font-family:'Quicksand', system-ui, sans-serif;
+  color:var(--ink);
+  background: #0a0a0f;
+  min-height:100vh;
+  transition: background 1.2s ease;
+  padding-bottom:60px;
+  overflow-x:hidden;
+}
+body.lights-on{
+  background: linear-gradient(160deg,#fff4f8 0%, #f6f0ff 45%, #eafaff 100%);
+  background-attachment: fixed;
+}
+
+/* ============================================================
+   1b. CUSTOM CREATIVE CURSOR — sharp paintbrush
+   ============================================================ */
+html, body {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23c8b6ff' stroke-width='3.5' stroke-linecap='round'/%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23ffffff' stroke-width='1' stroke-linecap='round' opacity='0.55'/%3E%3Ccircle cx='2.5' cy='2.5' r='2' fill='%23ff8fb1'/%3E%3C/svg%3E") 2 2, auto;
+}
+button, a, .letter-tile, .hint-frame, .key-slot,
+.sticky, .mini-frame, .wall-frame, .cluster, .replay-btn,
+.video-showcase, .gallery-strip .mini-frame {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23ffd166' stroke-width='3.5' stroke-linecap='round'/%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23ffffff' stroke-width='1' stroke-linecap='round' opacity='0.55'/%3E%3Ccircle cx='2.5' cy='2.5' r='2' fill='%23ff8fb1'/%3E%3C/svg%3E") 2 2, pointer;
+}
+
+/* ============================================================
+   2. SESSION-SKIP STYLES
+   ============================================================ */
+html.popup-seen  .popup-overlay { display: none !important; }
+html.lights-done .lights-off    { display: none !important; }
+html.game-done   .scramble-section { display: none !important; }
+html.game-done.replay-mode .scramble-section { display: block !important; }
+
+html.lights-done body,
+html.game-done   body{
+  background: linear-gradient(160deg,#fff4f8 0%, #f6f0ff 45%, #eafaff 100%);
+  background-attachment: fixed;
+}
+html.lights-done .main-content,
+html.game-done   .main-content{ opacity: 1 !important; }
+html.game-done   .unlocked-content{ opacity: 1 !important; pointer-events: auto !important; }
+
+.skip-link{
+  display:inline-block;
+  margin: 12px auto 0;
+  font-family:'Quicksand', sans-serif;
+  font-size:13px;
+  font-weight:500;
+  color: rgba(255,255,255,.75);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: none;
+  border: none;
+  padding: 6px;
+  transition: color .2s;
+}
+.skip-link:hover{ color: #fff; }
+.skip-link.dark{ color: var(--ink-soft); }
+.skip-link.dark:hover{ color: var(--pink); }
+
+/* ============================================================
+   3. WELCOME POPUP
+   ============================================================ */
+.popup-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(10,10,15,.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding:20px;
+  opacity:1;
+  transition: opacity .5s ease;
+}
+.popup-overlay.hidden{ opacity:0; pointer-events:none; }
+.popup-card{
+  background:#fff;
+  border-radius:26px;
+  padding: clamp(28px, 6vw, 40px) clamp(22px, 5vw, 32px);
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  box-shadow: 0 30px 70px rgba(0,0,0,.4);
+  animation: popIn .6s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{
+  from{ transform: scale(.8) translateY(20px); opacity:0; }
+  to  { transform: scale(1) translateY(0); opacity:1; }
+}
+.popup-card .logo{ font-size:52px; margin-bottom:10px; }
+.popup-card h2{
+  font-family:'Fredoka', sans-serif;
+  font-size: clamp(22px, 5.5vw, 26px);
+  color:var(--pink);
+  margin-bottom:10px;
+}
+.popup-card p{
+  font-size:15px;
+  color:var(--ink-soft);
+  line-height:1.6;
+  margin-bottom:24px;
+}
+.popup-card button{
+  font-family:'Fredoka', sans-serif;
+  font-size:16px;
+  font-weight:600;
+  color:#fff;
+  background: linear-gradient(135deg, var(--pink), var(--lav));
+  border:none;
+  padding:14px 40px;
+  border-radius:999px;
+  box-shadow: 0 10px 24px rgba(255,143,177,.5);
+  transition: transform .2s;
+}
+.popup-card button:active{ transform: scale(.96); }
+
+/* ============================================================
+   4. LIGHTS OFF SCREEN
+   ============================================================ */
+.lights-off{
+  position:fixed;
+  inset:0;
+  z-index:50;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background: #0a0a0f;
+  transition: opacity 1s ease;
+  padding:20px;
+  text-align:center;
+}
+.lights-off.hidden{ opacity:0; pointer-events:none; }
+.lights-off p{
+  font-family:'Caveat', cursive;
+  font-size: clamp(22px, 5.5vw, 28px);
+  color:#fff;
+  margin-bottom:20px;
+  text-align:center;
+}
+.lights-btn{
+  font-family:'Fredoka', sans-serif;
+  font-size: clamp(17px, 4.5vw, 20px);
+  font-weight:600;
+  color:#fff;
+  background: linear-gradient(135deg, #ffd166, #ff9dbb);
+  border:none;
+  padding:16px 40px;
+  border-radius:999px;
+  box-shadow: 0 0 30px rgba(255,209,102,.6), 0 0 60px rgba(255,157,187,.4);
+  animation: glowPulse 2s ease-in-out infinite;
+  transition: transform .2s;
+}
+.lights-btn:active{ transform: scale(.96); }
+@keyframes glowPulse{
+  0%,100%{ box-shadow: 0 0 30px rgba(255,209,102,.6), 0 0 60px rgba(255,157,187,.4); }
+  50%    { box-shadow: 0 0 50px rgba(255,209,102,.9), 0 0 90px rgba(255,157,187,.7); }
+}
+
+/* ============================================================
+   5. MAIN CONTENT
+   ============================================================ */
+.main-content{ opacity:0; transition: opacity 1s ease .5s; }
+.main-content.visible{ opacity:1; }
+
+.hanging-light{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:20px;
+  pointer-events:none;
+  margin-bottom:10px;
+}
+.hanging-light .cord{ width:3px; height:70px; background:#888; }
+.hanging-light .bulb{
+  width:50px; height:50px;
+  border-radius:50%;
+  background: radial-gradient(circle at 40% 30%, #fff9c4, #ffe066);
+  box-shadow: 0 0 40px 20px rgba(255,224,102,.5), 0 0 80px 40px rgba(255,224,102,.2);
+  margin-top:-5px;
+  animation: bulbGlow 2.5s ease-in-out infinite;
+}
+@keyframes bulbGlow{
+  0%,100%{ box-shadow: 0 0 40px 20px rgba(255,224,102,.5), 0 0 80px 40px rgba(255,224,102,.2); }
+  50%    { box-shadow: 0 0 60px 30px rgba(255,224,102,.8), 0 0 120px 60px rgba(255,224,102,.3); }
+}
+
+.creativity-header{ text-align:center; padding:10px 20px; }
+.creativity-header h1{
+  font-family:'Fredoka', sans-serif;
+  font-weight:600;
+  font-size: clamp(28px, 7vw, 44px);
+  color:var(--pink);
+  text-shadow: 0 3px 0 #fff;
+}
+.creativity-header p{
+  font-family:'Caveat', cursive;
+  font-size: clamp(18px, 5vw, 24px);
+  color:var(--ink-soft);
+  margin-top:4px;
+}
+
+.return-btn{
+  position:fixed;
+  top:14px; left:14px;
+  z-index:70;
+  background:#fff;
+  color:var(--ink);
+  text-decoration:none;
+  font-family:'Fredoka', sans-serif;
+  font-size:13px;
+  font-weight:600;
+  padding:10px 18px;
+  border-radius:999px;
+  box-shadow: 0 6px 18px rgba(90,60,110,.18);
+  transition: transform .2s;
+}
+.return-btn:active{ transform: scale(.95); }
+
+.replay-wrap{ text-align:center; margin-bottom: 26px; }
+.replay-btn{
+  font-family:'Fredoka', sans-serif;
+  font-size:14px;
+  font-weight:600;
+  color: var(--ink-soft);
+  background:#fff;
+  border: 2px dashed #e0d8ea;
+  padding:10px 22px;
+  border-radius:999px;
+  transition: transform .2s, border-color .2s, color .2s;
+}
+.replay-btn:hover{ border-color: var(--pink); color: var(--pink); }
+.replay-btn:active{ transform: scale(.95); }
+
+/* ============================================================
+   6. WORD SCRAMBLE GAME
+   ============================================================ */
+.scramble-section{
+  max-width:800px;
+  margin:30px auto;
+  padding:0 18px;
+  text-align:center;
+}
+.scramble-section h2{
+  font-family:'Fredoka', sans-serif;
+  font-size: clamp(20px, 5vw, 24px);
+  color:var(--ink);
+  margin-bottom:8px;
+}
+.scramble-section > p{
+  font-size:15px;
+  color:var(--ink-soft);
+  margin-bottom:22px;
+}
+.instructions{
+  background:#fff;
+  border-radius:18px;
+  padding:16px 20px;
+  max-width:600px;
+  margin:0 auto 14px;
+  box-shadow: var(--card-shadow);
+  font-size:14px;
+  line-height:1.7;
+  color:var(--ink-soft);
+  text-align:left;
+}
+.instructions strong{ color:var(--pink); }
+
+.key-slots{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin: 20px 0 26px;
+  flex-wrap:wrap;
+}
+.key-slot{
+  width:54px; height:54px;
+  border-radius:50%;
+  background:#f0ecf5;
+  border:3px dashed #d0c8dc;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  transition: all .4s ease;
+}
+.key-slot.filled{
+  background: linear-gradient(135deg, var(--yellow), var(--peach));
+  border:3px solid var(--yellow);
+  box-shadow: 0 0 20px rgba(255,224,102,.6);
+  animation: keyPop .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes keyPop{
+  0%{ transform: scale(.5); }
+  70%{ transform: scale(1.2); }
+  100%{ transform: scale(1); }
+}
+.question-box{
+  background:#fff;
+  border-radius:22px;
+  padding: clamp(20px, 5vw, 28px) clamp(16px, 4vw, 22px);
+  box-shadow: var(--card-shadow);
+  margin-bottom:22px;
+}
+.hint-frame{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background:#fff;
+  padding: 14px 14px 20px;
+  border-radius: 10px;
+  box-shadow: 0 14px 34px rgba(90,60,110,.20);
+  transform: rotate(-2deg);
+  max-width: 280px;
+  margin: 8px auto 24px;
+  animation: hintDrop .6s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes hintDrop{
+  0%  { transform: rotate(-8deg) scale(.7) translateY(-20px); opacity:0; }
+  70% { transform: rotate(2deg)  scale(1.05) translateY(0);   opacity:1; }
+  100%{ transform: rotate(-2deg) scale(1)    translateY(0);   opacity:1; }
+}
+.hint-frame::before{
+  content:'';
+  position:absolute;
+  top:-11px;
+  width:80px; height:24px;
+  background: repeating-linear-gradient(45deg,
+              var(--pink-2), var(--pink-2) 6px,
+              #fff, #fff 12px);
+  border-radius:3px;
+  transform: rotate(-4deg);
+  box-shadow: 0 3px 8px rgba(0,0,0,.1);
+  opacity:.95;
+}
+.hint-picture{
+  width:100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--peach), var(--pink-2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: clamp(72px, 18vw, 100px);
+  overflow:hidden;
+}
+.hint-picture img{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+.hint-caption{
+  font-family:'Caveat', cursive;
+  font-size: clamp(16px, 4vw, 19px);
+  color:var(--ink-soft);
+  margin-top:12px;
+  text-align:center;
+  line-height:1.2;
+}
+
+.letter-pool{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin-bottom:18px;
+  min-height:48px;
+}
+.letter-tile{
+  width:44px; height:44px;
+  border-radius:10px;
+  background: linear-gradient(135deg, var(--sky), var(--mint));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Fredoka', sans-serif;
+  font-size:20px;
+  font-weight:600;
+  color:var(--ink);
+  user-select:none;
+  box-shadow: 0 4px 8px rgba(0,0,0,.1);
+  transition: transform .15s;
+  touch-action: manipulation;
+}
+.letter-tile:active{ transform: scale(.9); }
+.answer-area{
+  min-height:56px;
+  border:3px dashed #d0c8dc;
+  border-radius:14px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  padding:8px;
+  margin-bottom:16px;
+  background:#faf8ff;
+}
+.answer-area .letter-tile{
+  background: linear-gradient(135deg, var(--pink), var(--lav));
+  color:#fff;
+}
+.answer-area .placeholder-text{
+  font-size:14px;
+  color:#b0a8bc;
+  font-style:italic;
+}
+.question-actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.btn-small{
+  font-family:'Fredoka', sans-serif;
+  font-size:15px;
+  font-weight:600;
+  padding:12px 26px;
+  border-radius:999px;
+  border:none;
+  transition: transform .2s;
+  touch-action: manipulation;
+}
+.btn-check{
+  background: linear-gradient(135deg, var(--pink), var(--lav));
+  color:#fff;
+  box-shadow: 0 6px 16px rgba(255,143,177,.4);
+}
+.btn-reset{
+  background:#f0ecf5;
+  color:var(--ink-soft);
+}
+.btn-small:active{ transform: scale(.95); }
+.feedback{
+  margin-top:12px;
+  font-family:'Caveat', cursive;
+  font-size:21px;
+  min-height:28px;
+}
+.feedback.success{ color: #2e9e5b; }
+.feedback.error{ color: #e05a5a; }
+
+/* ============================================================
+   7. UNLOCKED CONTENT — CREATIVE WALL
+   ============================================================ */
+.unlocked-content{
+  max-width:1280px;
+  margin:60px auto;
+  padding: 0 18px 60px;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity 1s ease;
+}
+.unlocked-content.unlocked{ opacity:1; pointer-events:auto; }
+
+.unlocked-content h2{
+  font-family:'Fredoka', sans-serif;
+  font-size: clamp(24px, 6vw, 32px);
+  color:var(--ink);
+  text-align:center;
+  margin-bottom:36px;
+}
+.unlocked-content h2 span{ color:var(--pink); }
+
+/* ============================================================
+   7a. THE WALL — CSS COLUMNS LAYOUT
+   ------------------------------------------------------------
+   Column layout fills all space naturally — no gaps, no
+   overcrowding. Items flow top to bottom, then jump to the
+   next column, like a real pinboard.
+   ============================================================ */
+.wall{
+  column-count: 3;
+  column-gap: 18px;
+  background: linear-gradient(135deg, #fdf6ec 0%, #fbe9d4 100%);
+  border-radius: 24px;
+  padding: 34px 26px;
+  box-shadow: 0 12px 34px rgba(90,60,110,.12);
+  border: 3px solid #fff;
+}
+/* Subtle paper texture, very light */
+.wall::before{
+  content:'';
+  position:absolute;
+  pointer-events:none;
+}
+
+.wall > *{
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  display: block;
+  margin: 0 0 18px;
+  width: 100%;
+}
+
+/* ============================================================
+   7b. STICKY NOTES
+   ============================================================ */
+.sticky{
+  position: relative;
+  background: var(--note-bg, #fff3a8);
+  border-radius: 4px;
+  padding: 22px 18px 18px;
+  box-shadow: 0 5px 12px rgba(0,0,0,.10);
+  transform: rotate(var(--note-rot, -3deg));
+  transition: transform .25s ease, box-shadow .25s ease;
+  font-family:'Shadows Into Light', 'Caveat', cursive;
+  color: #3a2f1a;
+}
+.sticky:hover{
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 0 10px 24px rgba(0,0,0,.16);
+}
+.sticky h4{
+  font-family:'Fredoka', sans-serif;
+  font-size: clamp(14px, 1.6vw, 16px);
+  font-weight: 600;
+  color: #3a2f1a;
+  margin-bottom: 6px;
+  letter-spacing:.2px;
+}
+.sticky p{
+  font-size: clamp(13px, 1.5vw, 15px);
+  line-height: 1.55;
+  color: #4a3f2a;
+}
+.sticky::after{
+  content:'';
+  position:absolute;
+  bottom:0; right:0;
+  width: 20px; height: 20px;
+  background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,.07) 50%);
+  border-radius: 0 0 4px 0;
+}
+.sticky::before{
+  content:'';
+  position:absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 50px; height: 16px;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(0,0,0,.05);
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08);
+}
+
+.sticky--yellow{ --note-bg: #fff3a8; }
+.sticky--pink  { --note-bg: #ffd1e0; color: #4a2a3a; }
+.sticky--mint  { --note-bg: #c8f5e0; color: #1a4a3a; }
+.sticky--peach { --note-bg: #ffe0b8; color: #5a3a1a; }
+.sticky--lav   { --note-bg: #e0d4ff; color: #3a2a5a; }
+.sticky--sky   { --note-bg: #cfe8ff; color: #1a3a5a; }
+.sticky--rose  { --note-bg: #ffe0e8; color: #5a1a3a; }
+
+/* ============================================================
+   7c. WALL PHOTO FRAMES
+   ============================================================ */
+.wall-frame{
+  position: relative;
+  background: #fff;
+  padding: 8px 8px 26px;
+  border-radius: 5px;
+  box-shadow: 0 8px 18px rgba(90,60,110,.18);
+  transform: rotate(var(--frame-rot, 2deg));
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .25s;
+}
+.wall-frame:hover{
+  transform: rotate(0deg) scale(1.03) translateY(-3px);
+  box-shadow: 0 14px 30px rgba(90,60,110,.26);
+}
+.wall-frame .wall-media{
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+  background: linear-gradient(135deg, var(--sky), var(--mint));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow: hidden;
+}
+.wall-frame .wall-media img{
+  width:100%; height:100%;
+  object-fit: cover;
+  display:block;
+}
+.wall-frame .wall-caption{
+  position:absolute;
+  bottom: 6px;
+  left: 0; right: 0;
+  font-family:'Caveat', cursive;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-align: center;
+  padding: 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wall-frame::before{
+  content:'';
+  position:absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 54px; height: 16px;
+  background: repeating-linear-gradient(45deg,
+              rgba(255,200,220,.75), rgba(255,200,220,.75) 5px,
+              rgba(255,255,255,.85) 5px, rgba(255,255,255,.85) 10px);
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.06);
+}
+
+/* ============================================================
+   7d. VIDEO SHOWCASE — small, lazy-loaded
+   ============================================================ */
+.video-showcase{
+  position: relative;
+  background: linear-gradient(135deg, #e0d4ff, #ffd1e0);
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 8px 18px rgba(90,60,110,.2);
+  transform: rotate(var(--frame-rot, -2deg));
+  transition: transform .3s;
+}
+.video-showcase:hover{
+  transform: rotate(0deg) scale(1.02);
+}
+.video-showcase .vs-media{
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #1a1220;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.video-showcase .vs-media video{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.video-showcase .vs-caption{
+  font-family:'Caveat', cursive;
+  font-size: 15px;
+  color: #4a2b5c;
+  text-align: center;
+  margin-top: 5px;
+}
+
+/* ============================================================
+   7e. CREATION CLUSTERS
+   ============================================================ */
+.cluster{
+  position: relative;
+  background: rgba(255,255,255,.72);
+  border-radius: 16px;
+  padding: 14px 12px 14px;
+  border: 2px dashed rgba(200,150,200,.5);
+  box-shadow: 0 5px 14px rgba(90,60,110,.10);
+  transform: rotate(var(--cluster-rot, 0deg));
+  transition: transform .3s;
+}
+.cluster:hover{
+  transform: rotate(0deg) scale(1.01);
+}
+.cluster-title{
+  font-family:'Fredoka', sans-serif;
+  font-size: clamp(13px, 1.7vw, 15px);
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing:.2px;
+}
+.cluster-items{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+.mini-frame{
+  width: 70px;
+  height: 78px;
+  background: #fff;
+  padding: 3px 3px 10px;
+  border-radius: 3px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15);
+  transform: rotate(var(--mini-rot, 0deg));
+  transition: transform .2s, box-shadow .2s;
+  position: relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow: hidden;
+}
+.mini-frame:hover{
+  transform: rotate(0deg) scale(1.12);
+  box-shadow: 0 8px 18px rgba(0,0,0,.25);
+  z-index: 10;
+}
+.mini-frame img{
+  width:100%; height:100%;
+  object-fit: cover;
+  border-radius: 2px;
+  display:block;
+}
+
+/* ============================================================
+   7f. PAINTINGS GALLERY (horizontal scroll)
+   ============================================================ */
+.gallery-section{
+  margin-top: 50px;
+  background: linear-gradient(135deg, #fdf6ec 0%, #fbe9d4 100%);
+  border-radius: 24px;
+  padding: 30px 24px 24px;
+  box-shadow: 0 12px 34px rgba(90,60,110,.12);
+  border: 3px solid #fff;
+}
+.gallery-title{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(19px, 3vw, 25px);
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 6px;
+}
+.gallery-title span{ color: var(--pink); }
+.gallery-hint{
+  text-align: center;
+  font-family:'Caveat', cursive;
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+}
+.gallery-strip{
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 10px 4px 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.gallery-strip::-webkit-scrollbar{ height: 8px; }
+.gallery-strip::-webkit-scrollbar-track{ background: rgba(0,0,0,.05); border-radius: 4px; }
+.gallery-strip::-webkit-scrollbar-thumb{ background: var(--pink-2); border-radius: 4px; }
+.gallery-strip .mini-frame{
+  flex: 0 0 110px;
+  scroll-snap-align: start;
+  width: 110px;
+  height: 124px;
+  transform: rotate(var(--mini-rot, 0deg));
+}
+
+/* ============================================================
+   8. RESPONSIVE
+   ============================================================ */
+@media (max-width: 1000px){
+  .wall{ column-count: 2; column-gap: 14px; padding: 26px 20px; }
+  .wall > *{ margin-bottom: 14px; }
+}
+@media (max-width: 640px){
+  .wall{ column-count: 1; padding: 22px 16px; border-radius: 18px; }
+  .sticky{ padding: 20px 16px; }
+  .mini-frame{ width: 62px; height: 70px; }
+  .gallery-strip .mini-frame{ flex: 0 0 92px; width: 92px; height: 104px; }
+  .gallery-section{ padding: 22px 16px 18px; border-radius: 18px; }
+
+  .key-slots{ gap:10px; }
+  .key-slot{ width:46px; height:46px; font-size:20px; }
+  .letter-tile{ width:38px; height:38px; font-size:17px; }
+  .hint-frame{ max-width: 220px; padding: 12px 12px 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     WELCOME POPUP
+     ============================================================ -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-card">
+    <div class="logo">🧠✨</div>
+    <h2>Welcome to Your Mind</h2>
+    <p>This is Creativity page, so you have to be creative to explore this part of your life.</p>
+    <button id="popupContinue">Continue</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     LIGHTS OFF SCREEN
+     ============================================================ -->
+<div class="lights-off" id="lightsOff">
+  <p>It's dark in here…<br>Tap the button to turn on the lights.</p>
+  <button class="lights-btn" id="lightsBtn">💡 Turn on the Lights</button>
+
+  <button class="skip-link" onclick="skipToMemories()">
+    Skip for now and see my memories →
+  </button>
+</div>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<div class="main-content" id="mainContent">
+
+  <a class="return-btn" href="main.html">← Back to Main</a>
+
+  <div class="hanging-light">
+    <div class="cord"></div>
+    <div class="bulb"></div>
+  </div>
+
+  <header class="creativity-header">
+    <h1>Victoria's Mind</h1>
+    <p>Where imagination becomes real.</p>
+  </header>
+
+  <!-- WORD SCRAMBLE GAME -->
+  <section class="scramble-section" id="scrambleSection">
+    <h2>🔑 Unlock Your Creative Memories</h2>
+    <p>Answer 3 questions to collect 3 keys and unlock this part of your life.</p>
+
+    <div class="instructions">
+      <strong>How to play:</strong><br>
+      1. Look at the picture hint.<br>
+      2. Tap a letter below to move it into the answer box.<br>
+      3. Tap a letter in the answer box to send it back.<br>
+      4. Tap "Check" when you think the answer is right.<br>
+      5. Collect all 3 keys to unlock your stories and memories!
+    </div>
+
+    <button class="skip-link dark" onclick="skipGameToMemories()">
+      Skip the game and see my memories →
+    </button>
+
+    <div class="key-slots">
+      <div class="key-slot" id="key0">🔒</div>
+      <div class="key-slot" id="key1">🔒</div>
+      <div class="key-slot" id="key2">🔒</div>
+    </div>
+
+    <div id="questionContainer"></div>
+  </section>
+
+  <!-- UNLOCKED CONTENT -->
+  <div class="unlocked-content" id="unlockedContent">
+
+    <div class="replay-wrap">
+      <button class="replay-btn" id="replayBtn" onclick="toggleReplay()">
+        🔄 Replay the game
+      </button>
+    </div>
+
+    <h2>Your <span>Creative Journey</span></h2>
+
+    <!-- ============================================================
+         THE WALL — CSS columns, no gaps, all items flow naturally
+         ============================================================ -->
+    <div class="wall">
+
+      <!-- 1. First crochet sticky -->
+      <div class="sticky sticky--yellow" style="--note-rot:-3deg;">
+        <h4>🧶 Your First Crochet</h4>
+        <p>Remember when you started creating your first crochet? It tangled up in your hands. Your sisters helped you, and with every tangle, and every cut, even when your hands started tiring, you kept doing it. And now it is a very important part of your life.</p>
+      </div>
+
+      <!-- 2. First painting sticky -->
+      <div class="sticky sticky--pink" style="--note-rot:4deg;">
+        <h4>🎨 Your First Painting</h4>
+        <p>You may have started painting at an early young age, but as far as I know, you started your first painting during the Covid-19 Stay at Home. Your parents bought you your first painting set, and you would allow your brain to mix every color up, and then something would eventually be created. And now you just sold a painting.</p>
+      </div>
+
+      <!-- 3. Bead crochet featured -->
+      <div class="wall-frame" style="--frame-rot:-2deg;">
+        <div class="wall-media">
+          <img src="images/img158.jpg" alt="Bead crochet wearable">
+        </div>
+        <div class="wall-caption">bead crochet 🧵</div>
+      </div>
+
+      <!-- 4. Bead sticky -->
+      <div class="sticky sticky--mint" style="--note-rot:3deg;">
+        <h4>💎 The Bead Crochet</h4>
+        <p>A unique crochet wearable, woven with beads and thread and every bit of patience you have. Wearable art — made by your own hands.</p>
+      </div>
+
+      <!-- 5. Crochets cluster -->
+      <div class="cluster" style="--cluster-rot:-1deg;">
+        <div class="cluster-title">🧶 Crochets</div>
+        <div class="cluster-items">
+          <div class="mini-frame" style="--mini-rot:-5deg;"><img src="images/img3.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:4deg;"><img src="images/img53.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:-2deg;"><img src="images/img54.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:6deg;"><img src="images/img55.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:-4deg;"><img src="images/img56.jpg" alt=""></div>
+        </div>
+      </div>
+
+      <!-- 6. Tangles sticky -->
+      <div class="sticky sticky--peach" style="--note-rot:5deg;">
+        <h4>🧵 Tangles &amp; Knots</h4>
+        <p>Every tangle, every knot — you learned to undo them one by one. Now your hands move without thinking.</p>
+      </div>
+
+      <!-- 7. Clay cluster -->
+      <div class="cluster" style="--cluster-rot:2deg;">
+        <div class="cluster-title">🏺 Clay Art</div>
+        <div class="cluster-items">
+          <div class="mini-frame" style="--mini-rot:-4deg;"><img src="images/img24.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:5deg;"><img src="images/img33.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:-2deg;"><img src="images/img34.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:6deg;"><img src="images/img35.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:-5deg;"><img src="images/img36.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:4deg;"><img src="images/img37.jpg" alt=""></div>
+        </div>
+      </div>
+
+      <!-- 8. Collection frame -->
+      <div class="wall-frame" style="--frame-rot:-2deg;">
+        <div class="wall-media">
+          <img src="images/img8.jpg" alt="Collection of paintings and crochets">
+        </div>
+        <div class="wall-caption">paintings &amp; crochets</div>
+      </div>
+
+      <!-- 9. Collection sticky -->
+      <div class="sticky sticky--lav" style="--note-rot:3deg;">
+        <h4>🌈 Your Collection</h4>
+        <p>Look how much you have made. A whole universe of little things you shaped with your hands and your heart.</p>
+      </div>
+
+      <!-- 10. Handmade gifts cluster -->
+      <div class="cluster" style="--cluster-rot:-3deg;">
+        <div class="cluster-title">🎁 Handmade Gifts</div>
+        <div class="cluster-items">
+          <div class="mini-frame" style="--mini-rot:-3deg;"><img src="images/img15.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:5deg;"><img src="images/img17.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:-5deg;"><img src="images/img26.jpg" alt=""></div>
+          <div class="mini-frame" style="--mini-rot:3deg;"><img src="images/img57.jpg" alt=""></div>
+        </div>
+      </div>
+
+      <!-- 11. Little hands video — small, no autoplay, loads only on tap -->
+      <div class="video-showcase" style="--frame-rot:2deg;">
+        <div class="vs-media">
+          <video preload="none" muted playsinline controls src="images/vd11.mp4"></video>
+        </div>
+        <div class="vs-caption">🧵 your little hands</div>
+      </div>
+
+      <!-- 12. Hands sticky -->
+      <div class="sticky sticky--sky" style="--note-rot:-4deg;">
+        <h4>✨ Your Hands</h4>
+        <p>Everything you touch turns into something the world has never seen before. Not because it's perfect — because it's <em>yours</em>.</p>
+      </div>
+
+      <!-- 13. Colors sticky -->
+      <div class="sticky sticky--rose" style="--note-rot:4deg;">
+        <h4>🌈 Your Colors</h4>
+        <p>You mix the world into colors only you can see, and then you share them with everyone. That is a gift.</p>
+      </div>
+
+      <!-- 14. Thoughts sticky -->
+      <div class="sticky sticky--yellow" style="--note-rot:-3deg;">
+        <h4>💭 Quiet Thoughts</h4>
+        <p>There is a calm in the way you create. The whole world disappears when you are deep in it. That is your magic.</p>
+      </div>
+
+      <!-- 15. Learning sticky -->
+      <div class="sticky sticky--mint" style="--note-rot:5deg;">
+        <h4>🌱 Still Learning</h4>
+        <p>You never stopped growing. Every year, a new skill, a new color, a new shape. That is the most beautiful thing about you.</p>
+      </div>
+
+      <!-- 16. Made with love sticky -->
+      <div class="sticky sticky--pink" style="--note-rot:-4deg;">
+        <h4>🎁 Made With Love</h4>
+        <p>Every gift you've made carried a little piece of you in it. That is why they matter so much.</p>
+      </div>
+
+      <!-- 17. Keep creating sticky -->
+      <div class="sticky sticky--lav" style="--note-rot:3deg;">
+        <h4>🌸 Keep Creating</h4>
+        <p>The world is a little softer, a little brighter, because you keep making things with your own two hands.</p>
+      </div>
+
+      <!-- 18. A little truth sticky -->
+      <div class="sticky sticky--peach" style="--note-rot:-3deg;">
+        <h4>💛 A Little Truth</h4>
+        <p>You are the most creative person I know — not because of what you make, but because of how you see the world.</p>
+      </div>
+
+    </div><!-- /wall -->
+
+    <!-- ============================================================
+         PAINTINGS GALLERY (horizontal scroll, separate box)
+         ============================================================ -->
+    <div class="gallery-section">
+      <h3 class="gallery-title">🎨 <span>Your Paintings</span></h3>
+      <p class="gallery-hint">swipe to see them all →</p>
+      <div class="gallery-strip">
+        <div class="mini-frame" style="--mini-rot:-3deg;"><img src="images/img13.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:4deg;"><img src="images/img21.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:-5deg;"><img src="images/img38.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:2deg;"><img src="images/img39.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:-4deg;"><img src="images/img40.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:5deg;"><img src="images/img41.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:-2deg;"><img src="images/img42.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:4deg;"><img src="images/img43.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:-5deg;"><img src="images/img44.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:3deg;"><img src="images/img45.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:-4deg;"><img src="images/img46.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:5deg;"><img src="images/img47.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:-3deg;"><img src="images/img48.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:4deg;"><img src="images/img49.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:-5deg;"><img src="images/img50.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:2deg;"><img src="images/img51.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:-4deg;"><img src="images/img52.jpg" alt="" loading="lazy"></div>
+        <div class="mini-frame" style="--mini-rot:5deg;"><img src="images/img64.jpg" alt="" loading="lazy"></div>
+      </div>
+    </div>
+
+  </div><!-- /unlocked-content -->
+</div><!-- /main-content -->
+
+<script>
+/* ============================================================
+   JAVASCRIPT FOR creativity.html
+   ============================================================ */
+
+const GATES = {
+  popup:  'creativityPopupShown',
+  lights: 'creativityLightsOn',
+  game:   'creativityGameDone'
+};
+function gateDone(name){
+  try { return sessionStorage.getItem(GATES[name]) === 'true'; }
+  catch(e) { return false; }
+}
+function markGateDone(name){
+  try { sessionStorage.setItem(GATES[name], 'true'); }
+  catch(e) {}
+}
+function enterLightsOnState(){
+  document.documentElement.classList.add('popup-seen','lights-done');
+  document.body.classList.add('lights-on');
+  document.getElementById('mainContent').classList.add('visible');
+  const lightsOff = document.getElementById('lightsOff');
+  if (lightsOff) lightsOff.classList.add('hidden');
+  const popup = document.getElementById('popupOverlay');
+  if (popup) popup.classList.add('hidden');
+}
+function enterMemoriesState(){
+  document.documentElement.classList.add('game-done');
+  document.getElementById('unlockedContent').classList.add('unlocked');
+}
+function skipToMemories(){
+  markGateDone('popup'); markGateDone('lights'); markGateDone('game');
+  enterLightsOnState(); enterMemoriesState();
+}
+function skipGameToMemories(){
+  markGateDone('game'); enterMemoriesState();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  if (gateDone('game')){
+    enterLightsOnState();
+    enterMemoriesState();
+  } else if (gateDone('lights')){
+    enterLightsOnState();
+    setTimeout(renderQuestion, 400);
+  }
+});
+
+/* POPUP */
+(function popupLogic(){
+  const overlay = document.getElementById('popupOverlay');
+  const btn     = document.getElementById('popupContinue');
+  btn.addEventListener('click', function(){
+    overlay.classList.add('hidden');
+    markGateDone('popup');
+  });
+})();
+
+/* LIGHTS */
+(function lightsLogic(){
+  const lightsBtn = document.getElementById('lightsBtn');
+  lightsBtn.addEventListener('click', function(){
+    document.body.classList.add('lights-on');
+    enterLightsOnState();
+    markGateDone('lights');
+    setTimeout(renderQuestion, 700);
+  });
+})();
+
+/* SCRAMBLE DATA */
+const questions = [
+  {
+    answer: "Happy Birthday Victoria",
+    caption: "A little hint… what day is it?",
+    hints: [ '<img src="images/imgM.jpg" alt="Birthday cake">' ]
+  },
+  {
+    answer: "Love U 3000",
+    caption: "A hint from our first ever conversation.",
+    hints: [ '<img src="images/img118.jpg" alt="A memory">' ]
+  },
+  {
+    answer: "Queen Victoria",
+    caption: "A hint with your picture… a royal title.",
+    hints: [ '<img src="images/img157.jpg" alt="Queen Victoria">' ]
+  }
+];
+
+let currentQuestion  = 0;
+let collectedKeys    = 0;
+let answerLetters    = [];
+let poolLetters      = [];
+let currentHintIndex = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function stripSpaces(str){ return str.replace(/\s+/g, ''); }
+function pickNewHintIndex(question){
+  const total = question.hints.length;
+  if (total <= 1) return 0;
+  let idx;
+  do { idx = Math.floor(Math.random() * total); }
+  while (idx === currentHintIndex);
+  return idx;
+}
+function buildHintFrame(question, hintIndex){
+  return `
+    <div class="hint-frame" id="hintFrame">
+      <div class="hint-picture">${question.hints[hintIndex]}</div>
+      <div class="hint-caption">${question.caption || 'A little hint…'}</div>
+    </div>
+  `;
+}
+function renderQuestion(){
+  const container = document.getElementById('questionContainer');
+  if (!container) return;
+  if (currentQuestion >= questions.length){
+    container.innerHTML = '<p style="font-family:Caveat,cursive;font-size:24px;color:var(--pink);">All keys collected! 🎉</p>';
+    return;
+  }
+  const q = questions[currentQuestion];
+  poolLetters    = shuffle(stripSpaces(q.answer).split(''));
+  answerLetters  = [];
+  currentHintIndex = pickNewHintIndex(q);
+
+  container.innerHTML = `
+    <div class="question-box">
+      ${buildHintFrame(q, currentHintIndex)}
+      <div class="letter-pool" id="letterPool"></div>
+      <div class="answer-area" id="answerArea">
+        <span class="placeholder-text">Tap letters below to add them here…</span>
+      </div>
+      <div class="question-actions">
+        <button class="btn-small btn-check" id="checkBtn">Check</button>
+        <button class="btn-small btn-reset" id="resetBtn">Reset</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+  `;
+  renderPool();
+  renderAnswer();
+  document.getElementById('checkBtn').addEventListener('click', checkAnswer);
+  document.getElementById('resetBtn').addEventListener('click', resetQuestion);
+}
+function renderPool(){
+  const pool = document.getElementById('letterPool');
+  pool.innerHTML = '';
+  poolLetters.forEach((letter, index) => {
+    const tile = document.createElement('div');
+    tile.className = 'letter-tile';
+    tile.textContent = letter;
+    tile.addEventListener('click', () => addLetter(index));
+    pool.appendChild(tile);
+  });
+}
+function renderAnswer(){
+  const area = document.getElementById('answerArea');
+  area.innerHTML = '';
+  if (answerLetters.length === 0){
+    area.innerHTML = '<span class="placeholder-text">Tap letters below to add them here…</span>';
+    return;
+  }
+  answerLetters.forEach((letter, index) => {
+    const tile = document.createElement('div');
+    tile.className = 'letter-tile';
+    tile.textContent = letter;
+    tile.addEventListener('click', () => removeLetter(index));
+    area.appendChild(tile);
+  });
+}
+function addLetter(poolIndex){
+  const letter = poolLetters[poolIndex];
+  poolLetters.splice(poolIndex, 1);
+  answerLetters.push(letter);
+  renderPool(); renderAnswer();
+}
+function removeLetter(answerIndex){
+  const letter = answerLetters[answerIndex];
+  answerLetters.splice(answerIndex, 1);
+  poolLetters.push(letter);
+  renderPool(); renderAnswer();
+}
+function checkAnswer(){
+  const q = questions[currentQuestion];
+  const userAnswer = answerLetters.join('');
+  const correct    = stripSpaces(q.answer);
+  const feedback   = document.getElementById('feedback');
+
+  if (userAnswer === correct){
+    feedback.textContent = 'Correct! You earned a key! 🔑';
+    feedback.className = 'feedback success';
+    const keySlot = document.getElementById('key' + collectedKeys);
+    if (keySlot){ keySlot.textContent = '🔑'; keySlot.classList.add('filled'); }
+    collectedKeys++;
+    setTimeout(() => {
+      currentQuestion++;
+      if (collectedKeys >= 3){
+        markGateDone('game');
+        enterMemoriesState();
+        document.getElementById('questionContainer').innerHTML =
+          '<p style="font-family:Caveat,cursive;font-size:24px;color:var(--pink);text-align:center;">All 3 keys collected! Your memories are unlocked below. 💕</p>';
+        if (document.documentElement.classList.contains('replay-mode')){
+          setTimeout(() => toggleReplay(), 1400);
+        }
+      } else {
+        renderQuestion();
+      }
+    }, 1200);
+  } else {
+    feedback.textContent = 'Not quite… try again!';
+    feedback.className = 'feedback error';
+  }
+}
+function resetQuestion(){
+  const q = questions[currentQuestion];
+  poolLetters   = shuffle(stripSpaces(q.answer).split(''));
+  answerLetters = [];
+  currentHintIndex = pickNewHintIndex(q);
+  renderQuestion();
+  const fb = document.getElementById('feedback');
+  if (fb) fb.textContent = '';
+}
+
+/* REPLAY */
+let replayOn = false;
+function toggleReplay(){
+  const html = document.documentElement;
+  const btn  = document.getElementById('replayBtn');
+  replayOn = !replayOn;
+  if (replayOn){
+    html.classList.add('replay-mode');
+    btn.textContent = '▲ Hide the game';
+    currentQuestion = 0;
+    collectedKeys   = 0;
+    document.querySelectorAll('.key-slot').forEach(s => {
+      s.textContent = '🔒';
+      s.classList.remove('filled');
+    });
+    renderQuestion();
+    setTimeout(() => {
+      const s = document.getElementById('scrambleSection');
+      if (s) s.scrollIntoView({ behavior:'smooth', block:'start' });
+    }, 120);
+  } else {
+    html.classList.remove('replay-mode');
+    btn.textContent = '🔄 Replay the game';
+    window.scrollTo({ top: 0, behavior:'smooth' });
+  }
+}
+</script>
+</body>
+</html>

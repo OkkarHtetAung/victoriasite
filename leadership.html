@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Your Duties — Leadership & Community</title>
+
+<!--
+  ============================================================
+  PAGE: leadership.html   (LEADERSHIP — BOLD THEME)
+  ============================================================
+  CHANGES IN THIS VERSION:
+    • Custom navy/gold paintbrush cursor
+    • Real images added to every milestone section
+  ============================================================
+-->
+
+<script>
+  try {
+    var s = sessionStorage;
+    if (s.getItem('leadershipMazeDone') === 'true') {
+      document.documentElement.classList.add('popup-seen','maze-done');
+    } else if (s.getItem('leadershipPopupShown') === 'true') {
+      document.documentElement.classList.add('popup-seen');
+    }
+  } catch(e) {}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Cinzel:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   1. THEME VARIABLES — bold, dignified, powerful
+   ============================================================ */
+:root{
+  --navy:       #1a2340;
+  --navy-2:     #2a3558;
+  --navy-soft:  #4a5878;
+  --crimson:    #c73e3e;
+  --crimson-d:  #9a2929;
+  --gold:       #d4a24c;
+  --gold-2:     #f0cd7a;
+  --gold-d:     #a67c2a;
+  --cream:      #f5f0e6;
+  --cream-2:    #faf6ec;
+  --ink:        #1a2340;
+  --ink-soft:   #5a6280;
+  --card-shadow: 0 12px 32px rgba(26,35,64,.18);
+  --card-shadow-lg: 0 20px 50px rgba(26,35,64,.28);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html{ scroll-behavior:smooth; }
+body{
+  font-family:'Quicksand', system-ui, sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(212,162,76,.14), transparent 40%),
+    radial-gradient(circle at 85% 90%, rgba(199,62,62,.12), transparent 40%),
+    linear-gradient(160deg, #faf6ec 0%, #f5f0e6 45%, #ece4d4 100%);
+  background-attachment: fixed;
+  min-height:100vh;
+  padding-bottom:60px;
+  overflow-x:hidden;
+}
+
+/* ============================================================
+   1b. CUSTOM NAVY/GOLD CURSOR — sharp paintbrush
+   ============================================================ */
+html, body {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%231a2340' stroke-width='3.6' stroke-linecap='round'/%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23f0cd7a' stroke-width='1.1' stroke-linecap='round' opacity='0.7'/%3E%3Ccircle cx='2.5' cy='2.5' r='2' fill='%23c73e3e'/%3E%3C/svg%3E") 2 2, auto;
+}
+button, a, .mz-btn, .replay-btn, .maze-skip,
+.photo-frame, .story-card, .privacy-btn {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23d4a24c' stroke-width='3.6' stroke-linecap='round'/%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23ffffff' stroke-width='1.1' stroke-linecap='round' opacity='0.8'/%3E%3Ccircle cx='2.5' cy='2.5' r='2' fill='%23c73e3e'/%3E%3C/svg%3E") 2 2, pointer;
+}
+
+/* ============================================================
+   2. SESSION-SKIP STYLES
+   ============================================================ */
+html.popup-seen .popup-overlay  { display: none !important; }
+html.maze-done  .maze-stage     { display: none !important; }
+html.maze-done  .main-content   { opacity: 1 !important; }
+html.maze-done  .unlocked-content{ opacity: 1 !important; pointer-events: auto !important; }
+
+/* ============================================================
+   3. WELCOME POPUP
+   ============================================================ */
+.popup-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(26,35,64,.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding:20px;
+  opacity:1;
+  transition: opacity .5s ease;
+}
+.popup-overlay.hidden{ opacity:0; pointer-events:none; }
+.popup-card{
+  background: linear-gradient(180deg, #ffffff, var(--cream));
+  border-radius: 20px;
+  padding: clamp(28px, 6vw, 42px) clamp(22px, 5vw, 34px);
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(212,162,76,.4), 0 30px 70px rgba(26,35,64,.5);
+  border: 2px solid rgba(212,162,76,.5);
+  animation: popIn .7s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+  overflow: hidden;
+}
+.popup-card::before{
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--crimson), var(--gold), var(--navy));
+}
+@keyframes popIn{
+  from{ transform: scale(.88) translateY(24px); opacity:0; }
+  to  { transform: scale(1) translateY(0); opacity:1; }
+}
+.popup-card .logo{
+  font-size: 56px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 10px rgba(212,162,76,.5));
+  position: relative;
+}
+.popup-card h2{
+  font-family:'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(22px, 5.5vw, 28px);
+  color: var(--navy);
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+  position: relative;
+}
+.popup-card p{
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin-bottom: 26px;
+  position: relative;
+}
+.popup-card button{
+  font-family:'Fredoka', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--crimson), var(--navy));
+  border: none;
+  padding: 14px 42px;
+  border-radius: 6px;
+  box-shadow: 0 10px 24px rgba(199,62,62,.45);
+  transition: transform .2s;
+  position: relative;
+  letter-spacing: 1px;
+}
+.popup-card button:active{ transform: scale(.96); }
+
+/* ============================================================
+   4. MAZE STAGE (gate #2)
+   ============================================================ */
+.maze-stage{
+  position:fixed;
+  inset:0;
+  z-index:60;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(180deg, #0d1428 0%, #1a2340 60%, #0d1428 100%);
+  padding: 20px;
+  text-align: center;
+  overflow: hidden;
+}
+.maze-stage::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(212,162,76,.14), transparent 60%),
+    repeating-linear-gradient(90deg, transparent 0, transparent 40px, rgba(212,162,76,.03) 40px, rgba(212,162,76,.03) 42px);
+  pointer-events:none;
+}
+.maze-title{
+  font-family:'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(22px, 5.5vw, 30px);
+  color: var(--gold-2);
+  margin-bottom: 6px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 30px rgba(212,162,76,.6);
+  position: relative;
+}
+.maze-sub{
+  font-family:'Caveat', cursive;
+  font-size: clamp(18px, 4.5vw, 22px);
+  color: #cdd3e6;
+  margin-bottom: 22px;
+  position: relative;
+}
+.maze{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  width: min(340px, 82vw);
+  padding: 10px;
+  background: rgba(13,20,40,.6);
+  border-radius: 12px;
+  border: 2px solid rgba(212,162,76,.4);
+  box-shadow: 0 0 40px rgba(212,162,76,.25), inset 0 0 30px rgba(0,0,0,.4);
+  position: relative;
+  touch-action: none;
+  user-select: none;
+}
+.cell{
+  aspect-ratio: 1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(14px, 3.5vw, 18px);
+  transition: background .15s ease;
+}
+.cell.wall{ background: linear-gradient(135deg, #2a3558, #1a2340); box-shadow: inset 0 0 4px rgba(0,0,0,.6); }
+.cell.path{ background: linear-gradient(135deg, #f0ede4, #dcd6c8); }
+.cell.start{ background: linear-gradient(135deg, #7ddba3, #4ca97a); box-shadow: 0 0 12px rgba(125,219,163,.7); }
+.cell.goal{ background: linear-gradient(135deg, var(--gold-2), var(--gold)); box-shadow: 0 0 16px rgba(240,205,122,.9); }
+.cell.player{
+  background: linear-gradient(135deg, var(--crimson), var(--crimson-d)) !important;
+  box-shadow: 0 0 20px rgba(199,62,62,.9);
+  animation: playerPulse 1.4s ease-in-out infinite;
+}
+@keyframes playerPulse{
+  0%,100%{ transform: scale(1); }
+  50%    { transform: scale(1.08); }
+}
+.maze-controls{
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(3, 58px);
+  grid-template-rows: repeat(3, 58px);
+  gap: 6px;
+  position: relative;
+}
+.mz-btn{
+  border: none;
+  background: linear-gradient(180deg, #2a3558, #1a2340);
+  color: var(--gold-2);
+  font-size: 22px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .1s, background .2s;
+  box-shadow: 0 4px 0 rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.1);
+  touch-action: manipulation;
+}
+.mz-btn:hover{ background: linear-gradient(180deg, #3a4568, #2a3558); }
+.mz-btn:active{ transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.4); }
+.mz-btn.up   { grid-column: 2; grid-row: 1; }
+.mz-btn.left { grid-column: 1; grid-row: 2; }
+.mz-btn.down { grid-column: 2; grid-row: 3; }
+.mz-btn.right{ grid-column: 3; grid-row: 2; }
+.maze-counter{
+  font-family:'Quicksand', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(240,205,122,.7);
+  margin-top: 18px;
+  position: relative;
+}
+.maze-skip{
+  margin-top: 16px;
+  font-family:'Quicksand', sans-serif;
+  font-size: 13px;
+  color: rgba(205,211,230,.6);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 6px;
+  transition: color .2s;
+  position: relative;
+}
+.maze-skip:hover{ color: #fff; }
+.maze-win{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13,20,40,.85);
+  border-radius: 12px;
+  font-family:'Cinzel', serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--gold-2);
+  letter-spacing: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+.maze-win.show{ opacity: 1; }
+
+/* ============================================================
+   5. MAIN CONTENT
+   ============================================================ */
+.main-content{
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1s ease .3s;
+}
+.main-content.visible{ opacity: 1; }
+
+.return-btn{
+  position: fixed;
+  top: 14px; left: 14px;
+  z-index: 75;
+  background: rgba(255,255,255,.95);
+  color: var(--navy);
+  text-decoration: none;
+  font-family:'Fredoka', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(26,35,64,.2);
+  transition: transform .2s;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(26,35,64,.1);
+}
+.return-btn:active{ transform: scale(.95); }
+
+.page-header{
+  text-align: center;
+  padding: clamp(40px, 8vw, 64px) 20px 10px;
+  position: relative;
+}
+.page-header::before{
+  content: '';
+  position: absolute;
+  top: 40px; left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--crimson), var(--gold));
+  border-radius: 2px;
+}
+.page-header h1{
+  font-family:'Cinzel', serif;
+  font-weight: 800;
+  font-size: clamp(28px, 7vw, 46px);
+  color: var(--navy);
+  text-shadow: 0 2px 0 #fff;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  margin-top: 14px;
+}
+.page-header p{
+  font-family:'Caveat', cursive;
+  font-size: clamp(19px, 4.8vw, 25px);
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+
+.section-title{
+  font-family:'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(20px, 5vw, 28px);
+  color: var(--navy);
+  text-align: center;
+  margin: clamp(40px, 7vw, 60px) 20px 22px;
+  letter-spacing: 1.5px;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 40px;
+}
+.section-title::before,
+.section-title::after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 24px;
+  height: 2px;
+  background: var(--crimson);
+}
+.section-title::before{ left: 0; }
+.section-title::after{ right: 0; }
+.section-title span{ color: var(--crimson); }
+.section-sub{
+  font-family:'Caveat', cursive;
+  font-size: clamp(16px, 4vw, 20px);
+  color: var(--ink-soft);
+  text-align: center;
+  margin: -14px 20px 22px;
+}
+
+/* ============================================================
+   6. UNLOCKED CONTENT
+   ============================================================ */
+.unlocked-content{
+  max-width: 960px;
+  margin: 0 auto 60px;
+  padding: 0 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+.unlocked-content.unlocked{ opacity: 1; pointer-events: auto; }
+
+.replay-wrap{ text-align: center; margin-bottom: 30px; }
+.replay-btn{
+  font-family:'Fredoka', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: #fff;
+  border: 2px dashed rgba(212,162,76,.6);
+  padding: 10px 22px;
+  border-radius: 6px;
+  transition: transform .2s, border-color .2s, color .2s;
+  letter-spacing: 1px;
+}
+.replay-btn:hover{ border-color: var(--crimson); color: var(--crimson); }
+.replay-btn:active{ transform: scale(.95); }
+
+.story-card{
+  position: relative;
+  background: linear-gradient(180deg, #ffffff, var(--cream-2));
+  border-radius: 18px;
+  padding: clamp(22px, 4.5vw, 32px) clamp(20px, 4vw, 28px) clamp(22px, 4.5vw, 30px);
+  box-shadow: var(--card-shadow);
+  border: 1px solid rgba(212,162,76,.28);
+  border-left: 6px solid var(--crimson);
+  margin-bottom: 30px;
+  transition: transform .3s, box-shadow .3s;
+}
+.story-card:hover{ transform: translateY(-3px); box-shadow: var(--card-shadow-lg); }
+
+.story-card .milestone{
+  display: inline-block;
+  font-family:'Cinzel', serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: var(--gold-d);
+  background: linear-gradient(180deg, #fffaf0, #f8ecc8);
+  border: 1px solid rgba(212,162,76,.5);
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.story-card h3{
+  font-family:'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(18px, 4.3vw, 22px);
+  color: var(--navy);
+  margin-bottom: 12px;
+  line-height: 1.3;
+  letter-spacing: .5px;
+}
+
+.story-card p{
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.story-card p:last-of-type{ margin-bottom: 0; }
+
+.story-card p strong{
+  color: var(--crimson-d);
+  font-weight: 600;
+}
+
+.photo-strip{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.photo-frame{
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--navy-2), var(--crimson));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(26,35,64,.2);
+  position: relative;
+  transition: transform .3s;
+}
+.photo-frame:hover{ transform: translateY(-3px); }
+.photo-frame img,
+.photo-frame video{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.photo-frame .big-emoji{
+  font-size: 42px;
+  color: #fff;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.3));
+}
+.photo-frame .play{
+  position: absolute;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  padding-left: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+  pointer-events: none;
+}
+
+.story-card.hero{
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+  border-left-color: var(--gold);
+  color: #fff;
+}
+.story-card.hero .milestone{
+  background: rgba(212,162,76,.2);
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+.story-card.hero h3{ color: var(--gold-2); }
+.story-card.hero p{ color: #cdd3e6; }
+.story-card.hero p strong{ color: var(--gold-2); }
+
+/* ============================================================
+   7. FOOTER
+   ============================================================ */
+.footer-note{
+  text-align: center;
+  padding: 30px 20px 20px;
+  font-family:'Caveat', cursive;
+  font-size: 22px;
+  color: var(--ink-soft);
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   8. RESPONSIVE
+   ============================================================ */
+@media (max-width: 640px){
+  .photo-strip{ grid-template-columns: repeat(2, 1fr); }
+  .maze-controls{ grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(3, 52px); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- WELCOME POPUP -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-card">
+    <div class="logo">🛡️⚔️</div>
+    <h2>Welcome to Your Duties</h2>
+    <p>This is a Leadership &amp; Community page, so you need to be brave to explore this part of your life.</p>
+    <button id="popupContinue">Continue</button>
+  </div>
+</div>
+
+<!-- MAZE STAGE -->
+<div class="maze-stage" id="mazeStage">
+  <p class="maze-title">FIND YOUR PATH</p>
+  <p class="maze-sub">guide the star to the flag</p>
+
+  <div class="maze" id="maze">
+    <div class="maze-win" id="mazeWin">PATH FOUND ✦</div>
+  </div>
+
+  <div class="maze-controls">
+    <button class="mz-btn up"    id="mzUp"    aria-label="Up">▲</button>
+    <button class="mz-btn left"  id="mzLeft"  aria-label="Left">◀</button>
+    <button class="mz-btn down"  id="mzDown"  aria-label="Down">▼</button>
+    <button class="mz-btn right" id="mzRight" aria-label="Right">▶</button>
+  </div>
+
+  <p class="maze-counter" id="mazeCounter">reach the flag</p>
+
+  <button class="maze-skip" onclick="skipMaze()">
+    Skip and see my memories →
+  </button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content" id="mainContent">
+
+  <a class="return-btn" href="main.html">← Back to Main</a>
+
+  <header class="page-header">
+    <h1>Your Duties</h1>
+    <p>Where courage became character.</p>
+  </header>
+
+  <!-- UNLOCKED MEMORIES -->
+  <div class="unlocked-content" id="unlockedContent">
+
+    <div class="replay-wrap">
+      <button class="replay-btn" id="replayBtn" onclick="toggleReplay()">
+        🔄 Play the maze again
+      </button>
+    </div>
+
+    <h2 class="section-title">Your <span>Leadership Story</span></h2>
+    <p class="section-sub">from follower to leader</p>
+
+    <!-- 1. First time church -->
+    <div class="story-card">
+      <span class="milestone">The Beginning</span>
+      <h3>Where It All Started</h3>
+      <p>The first time you started coming to church, meeting new people, making new friends — it was simple. You were just a girl in a room full of strangers who slowly became family.</p>
+      <p>No one knew what was coming. Not you, not them. But that simple beginning was the seed of everything.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img70.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img80.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img76.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- 2. Revolution -->
+    <div class="story-card">
+      <span class="milestone">2021</span>
+      <h3>The Revolution</h3>
+      <p>Then 2021 struck. You witnessed what it takes to stand with the right — the cost, the weight, the loneliness of it.</p>
+      <p>And in that moment you made a quiet decision that changed everything: <strong>you chose never to go back to the feared self again.</strong></p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img107.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img65.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- 3. Music Leader -->
+    <div class="story-card">
+      <span class="milestone">Same Year</span>
+      <h3>Becoming the Music Leader</h3>
+      <p>As older people moved to foreign countries, the gap had to be filled. You and the other younger ones had to split the responsibilities — and you became the music leader.</p>
+      <p>You did not know what to do. You did not know how to present, what responsibilities to take. But slowly, with time, you learnt everything.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img100.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img167.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- 4. Arguments and Team -->
+    <div class="story-card">
+      <span class="milestone">Standing Firm</span>
+      <h3>The Arguments, The Team</h3>
+      <p>Time passed. You interacted with the older people of the church many times. You argued about right standing with right. You were challenged, questioned, pushed.</p>
+      <p>But you always stood with your team. Always.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img170.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img115.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img104.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- 5. Music Leader to Youth Leader -->
+    <div class="story-card">
+      <span class="milestone">2024</span>
+      <h3>From Music Leader to Youth Leader</h3>
+      <p>You became, from music leader, to the whole youth team leader. Your responsibilities rose.</p>
+      <p>And with rising responsibilities, you had to get stronger. Become better. Improve yourself. <strong>Always keep improving.</strong></p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img117.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img175.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- 6. Love turned to Whispers -->
+    <div class="story-card">
+      <span class="milestone">The Cost</span>
+      <h3>When Love Turned to Whispers</h3>
+      <p>Many times, the same people who used to love you, who used to take care of you, started looking at you as an arrogant person — because you stood with yourself, and it did not align with their view.</p>
+      <p>They blamed you. They talked behind your back. But you chose to ignore it. You chose to do what was required to be done.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img106.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img178.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- 7. Pyin Oo Lwin -->
+    <div class="story-card">
+      <span class="milestone">Last April</span>
+      <h3>Pyin Oo Lwin</h3>
+      <p>With experience came vision. You led the team to the Pyin Oo Lwin trip last April. It was a great first-time experience for everyone — and for you, it was unforgettable.</p>
+      <p>You saw your team grow. You saw yourself grow. That trip was proof of everything you had built.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img180.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img177.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img175.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img174.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- 8. Stronger Better Still — Hero -->
+    <div class="story-card hero">
+      <span class="milestone">You Now</span>
+      <h3>Stronger, Better, Still Standing</h3>
+      <p>You get stronger. You get better. People start looking at you differently — with respect now, not doubt.</p>
+      <p>And there are also people who stayed. No matter what happened. No matter what was said. They stayed. <strong>Those are the ones that matter.</strong></p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img169.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img170.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img180.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img7.jpg" alt=""></div>
+      </div>
+    </div>
+
+  </div><!-- /unlocked-content -->
+</div><!-- /main-content -->
+
+<div class="footer-note">Leaders are made, not born. 💛</div>
+
+<script>
+/* ============================================================
+   JAVASCRIPT FOR leadership.html
+   ============================================================ */
+
+const GATES = {
+  popup: 'leadershipPopupShown',
+  maze:  'leadershipMazeDone'
+};
+function gateDone(name){
+  try { return sessionStorage.getItem(GATES[name]) === 'true'; }
+  catch(e) { return false; }
+}
+function markGateDone(name){
+  try { sessionStorage.setItem(GATES[name], 'true'); }
+  catch(e) {}
+}
+
+function showMainContent(){
+  document.getElementById('mainContent').classList.add('visible');
+}
+function enterMemoriesState(){
+  document.documentElement.classList.add('maze-done');
+  document.getElementById('unlockedContent').classList.add('unlocked');
+}
+function hideMaze(){
+  const ms = document.getElementById('mazeStage');
+  if (ms) ms.classList.add('hidden');
+}
+function skipMaze(){
+  markGateDone('maze');
+  hideMaze();
+  showMainContent();
+  enterMemoriesState();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  if (gateDone('maze')){
+    hideMaze();
+    showMainContent();
+    enterMemoriesState();
+  } else if (gateDone('popup')){
+    /* Maze gate shows naturally */
+  }
+});
+
+/* POPUP */
+(function popupLogic(){
+  const overlay = document.getElementById('popupOverlay');
+  const btn     = document.getElementById('popupContinue');
+  btn.addEventListener('click', function(){
+    overlay.classList.add('hidden');
+    markGateDone('popup');
+  });
+})();
+
+/* MAZE DESIGN
+   S = start, E = goal (flag), . = walkable, # = wall */
+const MAZE_ROWS = [
+  "S..#...",
+  "##.#.#.",
+  ".....#.",
+  ".###.#.",
+  ".#...#.",
+  ".#.###.",
+  "......E"
+];
+
+(function mazeLogic(){
+  const maze     = document.getElementById('maze');
+  const winBanner= document.getElementById('mazeWin');
+  const counter  = document.getElementById('mazeCounter');
+
+  let player = { r: 0, c: 0 };
+  let won = false;
+
+  function build(){
+    maze.querySelectorAll('.cell').forEach(c => c.remove());
+    for (let r = 0; r < MAZE_ROWS.length; r++){
+      for (let c = 0; c < MAZE_ROWS[r].length; c++){
+        const ch = MAZE_ROWS[r][c];
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.r = r;
+        cell.dataset.c = c;
+        if (ch === '#') cell.classList.add('wall');
+        else if (ch === 'S') cell.classList.add('start');
+        else if (ch === 'E'){ cell.classList.add('goal'); cell.textContent = '🏁'; }
+        else cell.classList.add('path');
+        maze.insertBefore(cell, winBanner);
+      }
+    }
+    refreshPlayer();
+  }
+
+  function refreshPlayer(){
+    maze.querySelectorAll('.cell').forEach(c => c.classList.remove('player'));
+    const cur = maze.querySelector(`.cell[data-r="${player.r}"][data-c="${player.c}"]`);
+    if (cur){ cur.classList.add('player'); cur.textContent = '⭐'; }
+  }
+
+  function move(dir){
+    if (won) return;
+    let { r, c } = player;
+    if (dir === 'up')    r--;
+    if (dir === 'down')  r++;
+    if (dir === 'left')  c--;
+    if (dir === 'right') c++;
+    if (r < 0 || r >= MAZE_ROWS.length) return;
+    if (c < 0 || c >= MAZE_ROWS[r].length) return;
+    if (MAZE_ROWS[r][c] === '#') return;
+    player.r = r; player.c = c;
+    refreshPlayer();
+    if (MAZE_ROWS[r][c] === 'E'){
+      won = true;
+      winBanner.classList.add('show');
+      counter.textContent = 'you made it ✦';
+      setTimeout(() => {
+        markGateDone('maze');
+        hideMaze();
+        showMainContent();
+        enterMemoriesState();
+      }, 1100);
+    }
+  }
+
+  document.getElementById('mzUp')   .addEventListener('click', () => move('up'));
+  document.getElementById('mzDown') .addEventListener('click', () => move('down'));
+  document.getElementById('mzLeft') .addEventListener('click', () => move('left'));
+  document.getElementById('mzRight').addEventListener('click', () => move('right'));
+
+  document.addEventListener('keydown', (e) => {
+    if (document.documentElement.classList.contains('maze-done')) return;
+    if (e.key === 'ArrowUp')    { e.preventDefault(); move('up'); }
+    if (e.key === 'ArrowDown')  { e.preventDefault(); move('down'); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); move('left'); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); move('right'); }
+  });
+
+  let touchStart = null;
+  maze.addEventListener('pointerdown', (e) => {
+    touchStart = { x: e.clientX, y: e.clientY };
+  });
+  maze.addEventListener('pointerup', (e) => {
+    if (!touchStart) return;
+    const dx = e.clientX - touchStart.x;
+    const dy = e.clientY - touchStart.y;
+    const threshold = 20;
+    if (Math.abs(dx) < threshold && Math.abs(dy) < threshold){ touchStart = null; return; }
+    if (Math.abs(dx) > Math.abs(dy)) move(dx > 0 ? 'right' : 'left');
+    else move(dy > 0 ? 'down' : 'up');
+    touchStart = null;
+  });
+
+  build();
+
+  window.__resetMaze = function(){
+    player = { r: 0, c: 0 };
+    won = false;
+    winBanner.classList.remove('show');
+    counter.textContent = 'reach the flag';
+    build();
+  };
+})();
+
+/* REPLAY TOGGLE */
+function toggleReplay(){
+  const html = document.documentElement;
+  html.classList.remove('maze-done');
+  document.getElementById('unlockedContent').classList.remove('unlocked');
+  document.getElementById('mainContent').classList.remove('visible');
+  const ms = document.getElementById('mazeStage');
+  ms.classList.remove('hidden');
+  ms.style.opacity = '1';
+  ms.style.pointerEvents = 'auto';
+  if (window.__resetMaze) window.__resetMaze();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Your Home — Family & Love</title>
+
+<!--
+  ============================================================
+  PAGE: family.html   (FAMILY & LOVE — WARM THEME)
+  ============================================================
+  CHANGES IN THIS VERSION:
+    • Custom warm terracotta paintbrush cursor
+    • Removed the personal-moments hide toggle
+      → "Us" is now a normal section at the end
+    • Real media added to every section
+  ============================================================
+-->
+
+<!-- Session flags — run BEFORE body renders -->
+<script>
+  try {
+    var s = sessionStorage;
+    if (s.getItem('familyTankDone') === 'true') {
+      document.documentElement.classList.add('popup-seen','tank-done');
+    } else if (s.getItem('familyPopupShown') === 'true') {
+      document.documentElement.classList.add('popup-seen');
+    }
+  } catch(e) {}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   1. THEME VARIABLES — warm, cozy, comforting
+   ============================================================ */
+:root{
+  --cream:      #fff6ec;
+  --cream-2:    #ffeedd;
+  --peach:      #ffd9b3;
+  --peach-2:    #ffc896;
+  --terracotta: #e08b5c;
+  --terracotta-d:#b86a3e;
+  --brown:      #7a4a2e;
+  --brown-soft: #a67755;
+  --rose:       #ffb3b3;
+  --soft-pink:  #ffd6e0;
+  --ink:        #5a3a2a;
+  --ink-soft:   #96775f;
+  --card-shadow: 0 10px 30px rgba(150,100,60,.15);
+  --card-shadow-lg: 0 18px 44px rgba(150,100,60,.22);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html{ scroll-behavior:smooth; }
+body{
+  font-family:'Quicksand', system-ui, sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(255,214,224,.6), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(255,217,179,.55), transparent 45%),
+    linear-gradient(160deg, #fff6ec 0%, #ffeedd 45%, #fff1e0 100%);
+  background-attachment: fixed;
+  min-height:100vh;
+  padding-bottom:60px;
+  overflow-x:hidden;
+}
+
+/* ============================================================
+   1b. CUSTOM WARM CURSOR — sharp paintbrush
+   ============================================================ */
+html, body {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23b86a3e' stroke-width='3.5' stroke-linecap='round'/%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23fff6ec' stroke-width='1' stroke-linecap='round' opacity='0.65'/%3E%3Ccircle cx='2.5' cy='2.5' r='2' fill='%23e08b5c'/%3E%3C/svg%3E") 2 2, auto;
+}
+button, a, .privacy-btn, .replay-btn, .tank-skip,
+.photo-frame, .story-card, .sibling-card, .heart-wrap {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23e08b5c' stroke-width='3.5' stroke-linecap='round'/%3E%3Cline x1='3' y1='3' x2='17' y2='17' stroke='%23ffffff' stroke-width='1' stroke-linecap='round' opacity='0.65'/%3E%3Ccircle cx='2.5' cy='2.5' r='2' fill='%23b86a3e'/%3E%3C/svg%3E") 2 2, pointer;
+}
+
+/* ============================================================
+   2. SESSION-SKIP STYLES
+   ============================================================ */
+html.popup-seen .popup-overlay  { display: none !important; }
+html.tank-done  .tank-stage     { display: none !important; }
+html.tank-done  .unlocked-content{ opacity: 1 !important; pointer-events: auto !important; }
+html.tank-done  .main-content   { opacity: 1 !important; }
+
+/* ============================================================
+   3. WELCOME POPUP
+   ============================================================ */
+.popup-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(90,58,42,.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 20px;
+  opacity: 1;
+  transition: opacity .5s ease;
+}
+.popup-overlay.hidden{ opacity: 0; pointer-events: none; }
+.popup-card{
+  background: linear-gradient(180deg, #ffffff, var(--cream));
+  border-radius: 26px;
+  padding: clamp(28px, 6vw, 42px) clamp(22px, 5vw, 34px);
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(255,180,140,.4), 0 30px 70px rgba(90,58,42,.35);
+  border: 1px solid rgba(224,139,92,.3);
+  animation: popIn .7s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+  overflow: hidden;
+}
+.popup-card::before{
+  content: '';
+  position: absolute;
+  top: -50%; left: -20%;
+  width: 140%; height: 120%;
+  background: radial-gradient(circle at 50% 0%, rgba(255,217,179,.5), transparent 60%);
+  pointer-events: none;
+}
+@keyframes popIn{
+  from{ transform: scale(.85) translateY(24px); opacity:0; }
+  to  { transform: scale(1) translateY(0); opacity:1; }
+}
+.popup-card .logo{
+  font-size: 56px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 10px rgba(224,139,92,.5));
+  position: relative;
+}
+.popup-card h2{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: clamp(24px, 6vw, 30px);
+  color: var(--terracotta-d);
+  margin-bottom: 12px;
+  position: relative;
+}
+.popup-card p{
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin-bottom: 26px;
+  position: relative;
+}
+.popup-card button{
+  font-family:'Fredoka', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--terracotta), var(--rose));
+  border: none;
+  padding: 14px 42px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(224,139,92,.5);
+  transition: transform .2s;
+  position: relative;
+}
+.popup-card button:active{ transform: scale(.96); }
+
+/* ============================================================
+   4. LOVE TANK STAGE
+   ============================================================ */
+.tank-stage{
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 40%, #ffe9d6 0%, #ffd9b3 50%, #e8b287 100%);
+  padding: 20px;
+  text-align: center;
+  overflow: hidden;
+}
+.tank-stage.hidden{ opacity:0; pointer-events:none; transition: opacity 1s ease; }
+
+.tank-title{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(22px, 5.5vw, 30px);
+  color: var(--brown);
+  margin-bottom: 6px;
+  text-shadow: 0 2px 0 rgba(255,255,255,.6);
+  position: relative;
+}
+.tank-sub{
+  font-family:'Caveat', cursive;
+  font-size: clamp(18px, 4.5vw, 22px);
+  color: var(--brown-soft);
+  margin-bottom: 24px;
+  position: relative;
+}
+.heart-wrap{
+  position: relative;
+  width: min(240px, 62vw);
+  height: min(240px, 62vw);
+  filter: drop-shadow(0 20px 30px rgba(184,106,62,.35));
+  cursor: pointer;
+  animation: heartBeat 2.4s ease-in-out infinite;
+  touch-action: manipulation;
+}
+@keyframes heartBeat{
+  0%,100%{ transform: scale(1); }
+  50%    { transform: scale(1.04); }
+}
+.heart-wrap:active{ animation: none; transform: scale(.96); }
+.heart-wrap svg{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.float-heart{
+  position: absolute;
+  font-size: 22px;
+  pointer-events: none;
+  animation: floatUp 1.2s ease-out forwards;
+  z-index: 10;
+}
+@keyframes floatUp{
+  0%  { transform: translate(0,0) scale(.5); opacity: 0; }
+  20% { opacity: 1; transform: translate(0,-10px) scale(1.2); }
+  100%{ transform: translate(var(--fx, 0px), -120px) scale(.6); opacity: 0; }
+}
+.tank-counter{
+  font-family:'Quicksand', sans-serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--brown-soft);
+  margin-top: 20px;
+  position: relative;
+}
+.tank-hint{
+  font-family:'Caveat', cursive;
+  font-size: 19px;
+  color: var(--brown);
+  margin-top: 6px;
+  position: relative;
+}
+.tank-skip{
+  margin-top: 26px;
+  font-family:'Quicksand', sans-serif;
+  font-size: 13px;
+  color: var(--brown-soft);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 6px;
+  transition: color .2s;
+  position: relative;
+}
+.tank-skip:hover{ color: var(--terracotta-d); }
+
+/* ============================================================
+   5. MAIN CONTENT
+   ============================================================ */
+.main-content{
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1s ease .3s;
+}
+.main-content.visible{ opacity: 1; }
+
+.return-btn{
+  position: fixed;
+  top: 14px; left: 14px;
+  z-index: 75;
+  background: rgba(255,255,255,.9);
+  color: var(--brown);
+  text-decoration: none;
+  font-family:'Fredoka', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(150,100,60,.2);
+  transition: transform .2s;
+  backdrop-filter: blur(6px);
+}
+.return-btn:active{ transform: scale(.95); }
+
+.page-header{
+  text-align: center;
+  padding: clamp(40px, 8vw, 64px) 20px 10px;
+  position: relative;
+}
+.page-header h1{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: clamp(30px, 7.5vw, 48px);
+  color: var(--terracotta-d);
+  text-shadow: 0 3px 0 #fff, 0 0 30px rgba(255,200,150,.6);
+  line-height: 1.1;
+}
+.page-header p{
+  font-family:'Caveat', cursive;
+  font-size: clamp(20px, 5vw, 26px);
+  color: var(--ink-soft);
+  margin-top: 6px;
+}
+
+.section-title{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(22px, 5.5vw, 30px);
+  color: var(--ink);
+  text-align: center;
+  margin: clamp(40px, 7vw, 60px) 20px 22px;
+}
+.section-title span{ color: var(--terracotta); }
+.section-sub{
+  font-family:'Caveat', cursive;
+  font-size: clamp(16px, 4vw, 20px);
+  color: var(--ink-soft);
+  text-align: center;
+  margin: -14px 20px 22px;
+}
+
+/* ============================================================
+   6. UNLOCKED CONTENT + STORY CARDS
+   ============================================================ */
+.unlocked-content{
+  max-width: 960px;
+  margin: 0 auto 60px;
+  padding: 0 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+.unlocked-content.unlocked{ opacity: 1; pointer-events: auto; }
+
+.replay-wrap{ text-align: center; margin-bottom: 26px; }
+.replay-btn{
+  font-family:'Fredoka', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: #fff;
+  border: 2px dashed rgba(224,139,92,.5);
+  padding: 10px 22px;
+  border-radius: 999px;
+  transition: transform .2s, border-color .2s, color .2s;
+}
+.replay-btn:hover{ border-color: var(--terracotta-d); color: var(--terracotta-d); }
+.replay-btn:active{ transform: scale(.95); }
+
+.story-card{
+  background: linear-gradient(180deg, #ffffff, var(--cream));
+  border-radius: 26px;
+  padding: clamp(20px, 4.5vw, 30px) clamp(18px, 4vw, 26px);
+  box-shadow: var(--card-shadow);
+  border: 1px solid rgba(224,139,92,.22);
+  margin-bottom: 34px;
+  transition: transform .3s, box-shadow .3s;
+}
+.story-card:hover{ transform: translateY(-3px); box-shadow: var(--card-shadow-lg); }
+
+.story-head{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.story-head .icon{
+  flex-shrink: 0;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--peach), var(--rose));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 6px 14px rgba(224,139,92,.35);
+}
+.story-head .info{ flex: 1; min-width: 0; }
+.story-head h3{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(18px, 4.3vw, 22px);
+  color: var(--terracotta-d);
+  line-height: 1.2;
+}
+.story-head .role{
+  font-family:'Caveat', cursive;
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.story-card p{
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+.story-card p:last-child{ margin-bottom: 0; }
+
+.photo-strip{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.photo-frame{
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--peach), var(--rose));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(150,100,60,.15);
+  position: relative;
+  transition: transform .3s;
+}
+.photo-frame:hover{ transform: translateY(-3px); }
+.photo-frame img,
+.photo-frame video{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.photo-frame .big-emoji{
+  font-size: 44px;
+  color: #fff;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.2));
+}
+.photo-frame .play{
+  position: absolute;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  color: var(--terracotta-d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  padding-left: 3px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  pointer-events: none;
+}
+
+/* Sibling grid */
+.sibling-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 18px;
+  margin-bottom: 34px;
+}
+.sibling-card{
+  background: linear-gradient(180deg, #ffffff, var(--cream));
+  border-radius: 22px;
+  padding: 22px 20px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid rgba(224,139,92,.22);
+  transition: transform .3s;
+}
+.sibling-card:hover{ transform: translateY(-3px); }
+.sibling-card .icon{
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--soft-pink), var(--peach));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(224,139,92,.3);
+}
+.sibling-card h3{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--terracotta-d);
+  margin-bottom: 8px;
+}
+.sibling-card p{
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* ============================================================
+   7. FOOTER
+   ============================================================ */
+.footer-note{
+  text-align: center;
+  padding: 30px 20px 20px;
+  font-family:'Caveat', cursive;
+  font-size: 22px;
+  color: var(--ink-soft);
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   8. RESPONSIVE
+   ============================================================ */
+@media (max-width: 640px){
+  .story-head{ gap: 10px; }
+  .story-head .icon{ width: 46px; height: 46px; font-size: 22px; }
+  .photo-strip{ grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- WELCOME POPUP -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-card">
+    <div class="logo">🏡💛</div>
+    <h2>Welcome to Your Home</h2>
+    <p>This is a Family &amp; Love page, so you have to care and love to explore this part of your life.</p>
+    <button id="popupContinue">Continue</button>
+  </div>
+</div>
+
+<!-- LOVE TANK STAGE -->
+<div class="tank-stage" id="tankStage">
+  <p class="tank-title">Fill your love tank 💗</p>
+  <p class="tank-sub">tap the heart to pour love in</p>
+
+  <div class="heart-wrap" id="heartWrap">
+    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#ffb3b3"/>
+          <stop offset="50%"  stop-color="#ff8fb1"/>
+          <stop offset="100%" stop-color="#e08b5c"/>
+        </linearGradient>
+        <clipPath id="heartClip">
+          <path d="M100,180
+                   C30,130 5,90 5,58
+                   C5,28 30,5 58,5
+                   C78,5 94,20 100,38
+                   C106,20 122,5 142,5
+                   C170,5 195,28 195,58
+                   C195,90 170,130 100,180 Z"/>
+        </clipPath>
+      </defs>
+      <rect x="0" y="0" width="200" height="200" fill="#fbe5e5" clip-path="url(#heartClip)"/>
+      <rect id="heartFill" x="0" y="200" width="200" height="0"
+            fill="url(#fillGrad)" clip-path="url(#heartClip)"/>
+      <path d="M100,180
+               C30,130 5,90 5,58
+               C5,28 30,5 58,5
+               C78,5 94,20 100,38
+               C106,20 122,5 142,5
+               C170,5 195,28 195,58
+               C195,90 170,130 100,180 Z"
+            fill="none" stroke="#b86a3e" stroke-width="4" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <p class="tank-counter" id="tankCounter">0% full</p>
+  <p class="tank-hint" id="tankHint">tap the heart</p>
+
+  <button class="tank-skip" onclick="skipTank()">
+    Skip and see my memories →
+  </button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content" id="mainContent">
+
+  <a class="return-btn" href="main.html">← Back to Main</a>
+
+  <header class="page-header">
+    <h1>Your Home</h1>
+    <p>Where love lives.</p>
+  </header>
+
+  <!-- UNLOCKED CONTENT -->
+  <div class="unlocked-content" id="unlockedContent">
+
+    <div class="replay-wrap">
+      <button class="replay-btn" id="replayBtn" onclick="toggleReplay()">
+        🔄 Replay the love tank
+      </button>
+    </div>
+
+    <h2 class="section-title">Your <span>Family Story</span></h2>
+    <p class="section-sub">the people who made you, you</p>
+
+    <!-- ==================================================
+         APAR
+         ================================================== -->
+    <div class="story-card">
+      <div class="story-head">
+        <div class="icon">👨‍🦳</div>
+        <div class="info">
+          <h3>Apar</h3>
+          <div class="role">always caring, always nurturing</div>
+        </div>
+      </div>
+      <p>When dengue hit you at 8, it was traumatic. But it was Apar who stayed beside you through it all — the softest heart, the kindest hands. He took care of you when you needed it most. That experience changed you, made you stronger. And it was with him, in those quiet days of recovery, that you started eating meat.</p>
+      <p>The one who is always caring, always nurturing. Soft, kind, and there — no matter what.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img70.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img171.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img176.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         AMOE
+         ================================================== -->
+    <div class="story-card">
+      <div class="story-head">
+        <div class="icon">👩</div>
+        <div class="info">
+          <h3>Amoe</h3>
+          <div class="role">the strict, reliable, strong woman</div>
+        </div>
+      </div>
+      <p>Amoe was different. She was strict. She gave you every kind of punishment for being too playful. She always pushed you and your sister to grow into women who could stand on their own — women who would never have to depend on anyone for their life.</p>
+      <p>She is the reason you are independent, responsible, and strong today. Strict, yes — but reliable, wise, and always right when it mattered.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img69.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img182.jpg" alt=""></div>
+        <div class="photo-frame">
+          <video controls muted playsinline preload="metadata" src="images/vd33.mp4"></video>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         BROTHERS, UNCLES & AUNTS
+         ================================================== -->
+    <div class="story-card">
+      <div class="story-head">
+        <div class="icon">👨‍👩‍👧</div>
+        <div class="info">
+          <h3>Your Brothers, Uncles &amp; Aunts</h3>
+          <div class="role">the big protectors</div>
+        </div>
+      </div>
+      <p>When you were little, they were big and you were small. Playing together almost always ended with you getting hurt. But your uncle and aunt always took special care of you — making sure the smallest one was safe and loved.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img71.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img173.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         SISTERS
+         ================================================== -->
+    <div class="story-card">
+      <div class="story-head">
+        <div class="icon">👧</div>
+        <div class="info">
+          <h3>Your Sisters</h3>
+          <div class="role">closer than ever</div>
+        </div>
+      </div>
+      <p>You were always close. But during Covid-19, something changed — you all got even closer. Living together, working together on handmade projects. That time turned sisters into best friends.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img59.jpg" alt=""></div>
+        <div class="photo-frame">
+          <video controls muted playsinline preload="metadata" src="images/vd9.mp4"></video>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         NIGHTINGALE
+         ================================================== -->
+    <div class="story-card">
+      <div class="story-head">
+        <div class="icon">💫</div>
+        <div class="info">
+          <h3>Nightingale — Your Sister</h3>
+          <div class="role">your other half</div>
+        </div>
+      </div>
+      <p>You fight. You argue. You were never compatible — but compatibility was never the point. She is little, she is yours, and she made you the responsible sister you are today.</p>
+      <p>You might fight, you might argue, but you can't deny — she completes you.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img60.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img84.jpg" alt=""></div>
+        <div class="photo-frame">
+          <video controls muted playsinline preload="metadata" src="images/vd34.mp4"></video>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         SISTER-LIKE FRIENDS
+         ================================================== -->
+    <div class="story-card">
+      <div class="story-head">
+        <div class="icon">🤝</div>
+        <div class="info">
+          <h3>Sister-Like Friends</h3>
+          <div class="role">the girls who became family</div>
+        </div>
+      </div>
+      <p>The girls who became like family. From older friends who you have known for a decade and others a little newer. They are woven into the story of your childhood to your school days.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img94.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img174.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img112.jpg" alt=""></div>
+      </div>
+    </div>
+
+    <!-- ==================================================
+         US
+         ================================================== -->
+    <div class="story-card">
+      <div class="story-head">
+        <div class="icon">💌</div>
+        <div class="info">
+          <h3>Us</h3>
+          <div class="role">Undisclosed Owner of Your Heart</div>
+        </div>
+      </div>
+      <p>From those first-time walking home together, to everything we've been together. There are countless memories. Remember, I am always by your side.</p>
+      <p>Take my hands. And keep going forever.</p>
+      <div class="photo-strip">
+        <div class="photo-frame"><img src="images/img184.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img148.jpg" alt=""></div>
+        <div class="photo-frame"><img src="images/img130.jpg" alt=""></div>
+        <div class="photo-frame">
+          <video controls muted playsinline preload="metadata" src="images/vd16.mp4"></video>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /unlocked-content -->
+</div><!-- /main-content -->
+
+<div class="footer-note">Made with love, for you. 💛</div>
+
+<script>
+/* ============================================================
+   JAVASCRIPT FOR family.html
+   ============================================================ */
+
+const GATES = {
+  popup: 'familyPopupShown',
+  tank:  'familyTankDone'
+};
+function gateDone(name){
+  try { return sessionStorage.getItem(GATES[name]) === 'true'; }
+  catch(e) { return false; }
+}
+function markGateDone(name){
+  try { sessionStorage.setItem(GATES[name], 'true'); }
+  catch(e) {}
+}
+
+function showMainContent(){
+  document.getElementById('mainContent').classList.add('visible');
+}
+function enterMemoriesState(){
+  document.documentElement.classList.add('tank-done');
+  document.getElementById('unlockedContent').classList.add('unlocked');
+}
+function hideTank(){
+  const ts = document.getElementById('tankStage');
+  if (ts) ts.classList.add('hidden');
+}
+function skipTank(){
+  markGateDone('tank');
+  hideTank();
+  showMainContent();
+  enterMemoriesState();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  if (gateDone('tank')){
+    hideTank();
+    showMainContent();
+    enterMemoriesState();
+  } else if (gateDone('popup')){
+    /* Tank gate shows naturally */
+  }
+});
+
+/* POPUP */
+(function popupLogic(){
+  const overlay = document.getElementById('popupOverlay');
+  const btn     = document.getElementById('popupContinue');
+  btn.addEventListener('click', function(){
+    overlay.classList.add('hidden');
+    markGateDone('popup');
+  });
+})();
+
+/* LOVE TANK GATE */
+(function tankLogic(){
+  const heartWrap = document.getElementById('heartWrap');
+  const fill      = document.getElementById('heartFill');
+  const counter   = document.getElementById('tankCounter');
+  const hint      = document.getElementById('tankHint');
+
+  const TAPS_NEEDED = 5;
+  let taps = 0;
+
+  heartWrap.addEventListener('click', function(e){
+    if (taps >= TAPS_NEEDED) return;
+
+    taps++;
+    const pct = Math.min(100, (taps / TAPS_NEEDED) * 100);
+
+    fill.setAttribute('y', 200 - (200 * pct / 100));
+    fill.setAttribute('height', (200 * pct / 100));
+
+    counter.textContent = Math.round(pct) + '% full';
+
+    const rect = heartWrap.getBoundingClientRect();
+    const fh = document.createElement('span');
+    fh.className = 'float-heart';
+    fh.textContent = '💗';
+    fh.style.left = (e.clientX - rect.left - 10) + 'px';
+    fh.style.top  = (e.clientY - rect.top  - 10) + 'px';
+    fh.style.setProperty('--fx', (Math.random() * 60 - 30) + 'px');
+    heartWrap.appendChild(fh);
+    setTimeout(() => fh.remove(), 1200);
+
+    if (taps >= TAPS_NEEDED){
+      hint.textContent = 'Your heart is full 💛';
+      setTimeout(() => {
+        markGateDone('tank');
+        hideTank();
+        showMainContent();
+        enterMemoriesState();
+      }, 800);
+    }
+  });
+})();
+
+/* REPLAY TOGGLE */
+let replayOn = false;
+
+function toggleReplay(){
+  const html = document.documentElement;
+  const btn  = document.getElementById('replayBtn');
+  replayOn = !replayOn;
+
+  if (replayOn){
+    html.classList.remove('tank-done');
+    document.getElementById('unlockedContent').classList.remove('unlocked');
+    document.getElementById('mainContent').classList.remove('visible');
+
+    const ts = document.getElementById('tankStage');
+    ts.classList.remove('hidden');
+    ts.style.opacity = '1';
+    ts.style.pointerEvents = 'auto';
+
+    const fill    = document.getElementById('heartFill');
+    const counter = document.getElementById('tankCounter');
+    const hint    = document.getElementById('tankHint');
+    fill.setAttribute('y', 200);
+    fill.setAttribute('height', 0);
+    counter.textContent = '0% full';
+    hint.textContent = 'tap the heart';
+
+    btn.textContent = '🔄 Replay the love tank';
+    replayOn = false;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Victoria's Journey — Home</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   1. THEME VARIABLES
+   ============================================================ */
+:root{
+  --pink:   #ff8fb1;
+  --pink-2: #ffc2d6;
+  --peach:  #ffd6a5;
+  --lav:    #c8b6ff;
+  --mint:   #b8f2e6;
+  --sky:    #a9def9;
+  --yellow: #ffe066;
+  --cream:  #fff8f0;
+  --ink:    #4a3f55;
+  --ink-soft:#8a7f96;
+  --card-shadow: 0 10px 30px rgba(90,60,110,.12);
+  --card-shadow-lg: 0 18px 44px rgba(90,60,110,.18);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+
+/* ============================================================
+   CUSTOM CURSOR — pointier pink arrow
+   ============================================================ */
+html, body{
+  cursor: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M2 2 L2 21 L7.5 16 L11.5 23.5 L14.5 22 L10.5 14.5 L19.5 14.5 Z' fill='%23ff6f9c' stroke='%23ffffff' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E") 2 2, auto;
+}
+a, button, [role="button"], .tarot-card, .road-icon, .highlight, .beauty-card, .life-card, .video-ph, .story-reaction, .mute-btn{
+  cursor: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath d='M2 2 L2 24 L8.5 18 L13 26.5 L16.5 25 L12 16.5 L22 16.5 Z' fill='%23ff4f7f' stroke='%23ffffff' stroke-width='1.8' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E") 2 2, pointer;
+}
+
+html{ scroll-behavior:smooth; }
+body{
+  font-family:'Quicksand', system-ui, sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255,194,214,.55) 0%, transparent 45%),
+    radial-gradient(circle at 100% 0%, rgba(200,182,255,.5) 0%, transparent 45%),
+    radial-gradient(circle at 0% 100%, rgba(169,222,249,.5) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(255,214,165,.45) 0%, transparent 45%),
+    linear-gradient(160deg, #fffafb 0%, #f8f4ff 50%, #f0faff 100%);
+  background-attachment: fixed;
+  min-height:100vh;
+  padding-bottom:60px;
+  overflow-x:hidden;
+}
+body::before, body::after{
+  content:''; position:fixed; border-radius:50%; filter: blur(90px);
+  pointer-events:none; z-index:-1;
+}
+body::before{
+  width:min(620px,90vw); height:min(620px,90vw);
+  background: radial-gradient(circle, rgba(255,143,177,.45), transparent 70%);
+  top:-15%; left:-12%; animation: blobA 22s ease-in-out infinite alternate;
+}
+body::after{
+  width:min(680px,95vw); height:min(680px,95vw);
+  background: radial-gradient(circle, rgba(168,85,247,.32), transparent 70%);
+  bottom:-20%; right:-12%; animation: blobB 26s ease-in-out infinite alternate;
+}
+@keyframes blobA{ to{ transform: translate(90px, 70px) scale(1.12); } }
+@keyframes blobB{ to{ transform: translate(-90px, -60px) scale(1.1); } }
+
+.blob-c{
+  position:fixed; width:min(520px,80vw); height:min(520px,80vw);
+  border-radius:50%; background: radial-gradient(circle, rgba(184,242,230,.5), transparent 70%);
+  top:40%; left:40%; filter: blur(100px); pointer-events:none; z-index:-1;
+  animation: blobC 30s ease-in-out infinite alternate;
+}
+@keyframes blobC{ to{ transform: translate(-80px, 90px) scale(1.15); } }
+
+/* ============================================================
+   2. HEADER
+   ============================================================ */
+.page-header{ text-align:center; padding: clamp(36px, 7vw, 60px) 20px 10px; }
+.page-header h1{
+  font-family:'Fredoka', sans-serif; font-weight:600;
+  font-size: clamp(26px, 7vw, 42px); color:var(--pink);
+  text-shadow: 0 3px 0 #fff; line-height:1.2;
+}
+.page-header p{
+  font-family:'Caveat', cursive; font-size: clamp(18px, 5vw, 24px);
+  color:var(--ink-soft); margin-top:6px;
+}
+
+/* ============================================================
+   3. BALLOON PHOTO FRAME
+   ============================================================ */
+.balloon{ display:flex; flex-direction:column; align-items:center; width:100%; --balloon-tint: var(--pink); }
+.balloon-photo{
+  position:relative; width:100%; aspect-ratio: 1 / 1.05;
+  border-radius: 50% 50% 48% 48% / 46% 46% 54% 54%;
+  overflow:hidden; background: linear-gradient(135deg, var(--balloon-tint), #fff);
+  box-shadow: inset -12px -14px 30px rgba(0,0,0,.10), inset 10px 12px 24px rgba(255,255,255,.6), 0 12px 26px rgba(90,60,110,.18);
+  display:flex; align-items:center; justify-content:center;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.balloon:hover .balloon-photo{ transform: translateY(-4px) rotate(-1deg); }
+.balloon-photo img{ width:100%; height:100%; object-fit: cover; display:block; }
+.balloon-photo::after{
+  content:''; position:absolute; top:8%; left:14%; width:30%; height:22%;
+  border-radius:50%; background: radial-gradient(circle, rgba(255,255,255,.85), transparent 70%);
+  pointer-events:none;
+}
+.balloon-knot{
+  width:0; height:0;
+  border-left: 6px solid transparent; border-right: 6px solid transparent;
+  border-top: 9px solid var(--balloon-tint); filter: brightness(.9);
+}
+.balloon-string{
+  width:2px; height: clamp(22px, 4vw, 34px);
+  background: linear-gradient(to bottom, var(--balloon-tint), transparent); border-radius:2px;
+}
+
+/* ============================================================
+   4. TOP BALLOON ROW
+   ============================================================ */
+.balloon-row{
+  display:grid; grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 4vw, 40px); max-width: 640px;
+  margin: 20px auto 10px; padding: 0 20px; align-items:end;
+}
+.balloon-row .balloon:nth-child(1){ --balloon-tint: var(--pink); transform: translateY(10px); }
+.balloon-row .balloon:nth-child(2){ --balloon-tint: var(--lav);  transform: translateY(-6px); }
+.balloon-row .balloon:nth-child(3){ --balloon-tint: var(--mint); transform: translateY(10px); }
+.balloon-caption{
+  font-family:'Caveat', cursive; font-size: clamp(14px, 3.6vw, 18px);
+  color:var(--ink-soft); margin-top:4px; text-align:center;
+}
+
+/* ============================================================
+   5. SECTION TITLES
+   ============================================================ */
+.section-title{
+  font-family:'Fredoka', sans-serif; font-weight:600;
+  font-size: clamp(20px, 5.5vw, 30px); color:var(--ink);
+  text-align:center; margin: clamp(40px, 7vw, 60px) 20px 22px;
+}
+.section-title span{ color:var(--pink); }
+.section-sub{
+  font-family:'Caveat', cursive; font-size: clamp(16px, 4vw, 20px);
+  color:var(--ink-soft); text-align:center; margin: -14px 20px 22px;
+}
+
+/* ============================================================
+   6. LITTLE MOMENTS
+   ============================================================ */
+.moments-strip{
+  max-width: 900px; margin: 0 auto; padding: 0 18px;
+  display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.video-ph{
+  position:relative; aspect-ratio: 3 / 4; border-radius: 22px; overflow:hidden;
+  background: linear-gradient(135deg, var(--peach), var(--pink));
+  box-shadow: var(--card-shadow); display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:6px; color:#fff; cursor:pointer;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+}
+.video-ph:nth-child(2){ background: linear-gradient(135deg, var(--sky), var(--lav)); }
+.video-ph:nth-child(3){ background: linear-gradient(135deg, var(--mint), var(--sky)); }
+.video-ph:hover{ transform: translateY(-6px) scale(1.02); box-shadow: var(--card-shadow-lg); }
+.video-ph video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+
+/* ============================================================
+   7. LIFE PARTS GRID
+   ============================================================ */
+.life-grid{
+  display:grid; grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 2.2vw, 24px); max-width:1100px; margin:0 auto; padding:0 18px;
+}
+.life-card{
+  background: #fff; border-radius: 26px; padding: 16px 16px 20px;
+  box-shadow: var(--card-shadow); text-align:center;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+  position:relative; overflow:hidden;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+}
+.life-card:hover{ transform: translateY(-6px) scale(1.02); box-shadow: var(--card-shadow-lg); }
+.card-image{
+  position:relative; width:100%; aspect-ratio: 1 / 1; border-radius: 18px;
+  overflow:hidden; background: linear-gradient(135deg, var(--pink-2), var(--sky));
+  box-shadow: 0 8px 20px rgba(90,60,110,.15), inset 0 0 0 3px #fff;
+}
+.card-image img{ width:100%; height:100%; object-fit: cover; display:block; transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
+.life-card:hover .card-image img{ transform: scale(1.07); }
+.card-image .placeholder-emoji{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-size: clamp(40px, 6vw, 56px); opacity:.6; pointer-events:none;
+}
+.card-image::after{
+  content:''; position:absolute; top:0; left:0; right:0; height:35%;
+  background: linear-gradient(180deg, rgba(255,255,255,.35), transparent); pointer-events:none;
+}
+.life-card:nth-child(1) .card-image{ background: linear-gradient(135deg, var(--pink), #fff); }
+.life-card:nth-child(2) .card-image{ background: linear-gradient(135deg, var(--lav), #fff); }
+.life-card:nth-child(3) .card-image{ background: linear-gradient(135deg, var(--mint), #fff); }
+.life-card:nth-child(4) .card-image{ background: linear-gradient(135deg, var(--sky), #fff); }
+.life-card:nth-child(5) .card-image{ background: linear-gradient(135deg, var(--peach), #fff); }
+.life-card:nth-child(6) .card-image{ background: linear-gradient(135deg, var(--yellow), #fff); }
+.life-card h3{
+  font-family:'Fredoka', sans-serif; font-weight:600;
+  font-size: clamp(16px, 2vw, 19px); color:var(--ink); margin-top:2px;
+}
+.life-card p{ font-size: clamp(12.5px, 1.4vw, 14px); color:var(--ink-soft); line-height:1.5; }
+.life-card .explore-btn{
+  display:inline-block; margin-top:6px; padding:9px 24px; border-radius:999px;
+  background: linear-gradient(135deg, var(--pink), var(--lav)); color:#fff;
+  text-decoration:none; font-family:'Fredoka', sans-serif; font-weight:500; font-size:14px;
+  box-shadow: 0 6px 16px rgba(255,143,177,.4);
+  transition: transform .2s, box-shadow .2s; border:none; cursor:pointer;
+}
+.life-card .explore-btn:hover{ transform: translateY(-2px); }
+.life-card .explore-btn:active{ transform: scale(.96); }
+
+/* ============================================================
+   8. FUTURE — TAROT CARDS
+   ============================================================ */
+.future-section{
+  max-width: 1100px; margin: clamp(60px, 10vw, 100px) auto 40px;
+  padding: 0 18px; position: relative;
+}
+.future-section::before{
+  content: ''; position: absolute; inset: -40px 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(200,182,255,.35), transparent 65%);
+  pointer-events: none; z-index: -1;
+}
+.future-header{ text-align: center; margin-bottom: 44px; }
+.future-header h2{
+  font-family:'Fredoka', sans-serif; font-weight: 600;
+  font-size: clamp(22px, 5.5vw, 30px); color: var(--ink); margin: 0 0 10px;
+}
+.future-header h2 span{ color: var(--pink); }
+.future-header p{
+  font-family:'Caveat', cursive; font-size: clamp(16px, 4vw, 20px);
+  color: var(--ink-soft); text-align: center;
+}
+.future-header .line{
+  display: inline-block; margin-top: 12px; width: 60px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--pink), transparent);
+}
+.tarot-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.5vw, 26px); }
+.tarot-card{
+  position: relative; aspect-ratio: 2 / 3; cursor: pointer;
+  perspective: 1200px; -webkit-perspective: 1200px;
+  border: none; background: none; padding: 0; font-family: inherit; outline: none;
+}
+.tarot-card:focus-visible{ outline: 3px solid var(--pink); outline-offset: 4px; border-radius: 20px; }
+.tarot-inner{
+  position: absolute; inset: 0;
+  transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
+  transition: transform .85s cubic-bezier(.34,1.4,.64,1);
+  border-radius: 18px;
+}
+.tarot-card.flipped .tarot-inner{ transform: rotateY(180deg); }
+.tarot-face{
+  position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 18px; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 22px 16px; text-align: center;
+  box-shadow: 0 22px 44px rgba(90,60,110,.28), 0 0 0 2px rgba(255,255,255,.6), inset 0 0 60px rgba(200,182,255,.15);
+}
+.tarot-face::before{
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 25%, #fff, transparent),
+    radial-gradient(1px 1px at 75% 15%, #ffe066, transparent),
+    radial-gradient(1.5px 1.5px at 40% 65%, #fff, transparent),
+    radial-gradient(1px 1px at 85% 75%, #c8b6ff, transparent),
+    radial-gradient(1px 1px at 25% 85%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 60% 40%, #b8f2e6, transparent),
+    radial-gradient(1px 1px at 90% 45%, #fff, transparent),
+    radial-gradient(1px 1px at 10% 55%, #ffe066, transparent);
+  opacity: .65; pointer-events: none;
+  animation: starTwinkle 4.5s ease-in-out infinite;
+}
+@keyframes starTwinkle{ 0%,100%{ opacity: .45; } 50%{ opacity: .95; } }
+.tarot-face::after{
+  content: ''; position: absolute; inset: 9px; border-radius: 11px;
+  border: 1.5px solid rgba(255,224,102,.5); box-shadow: inset 0 0 22px rgba(255,224,102,.15);
+  pointer-events: none;
+}
+.tarot-front{ background: radial-gradient(ellipse at 50% 30%, #4a3f55 0%, #2a1e3a 60%, #1a1025 100%); }
+.tarot-front .future-label{
+  position: relative; z-index: 2; font-family:'Fredoka', sans-serif;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 4px; color: var(--yellow);
+  text-transform: uppercase; margin-bottom: 20px; opacity: .85;
+}
+.tarot-front .symbol{
+  position: relative; z-index: 2; font-size: clamp(46px, 10vw, 74px);
+  filter: drop-shadow(0 0 22px rgba(255,224,102,.7)); margin-bottom: 14px;
+  animation: symbolFloat 3.5s ease-in-out infinite;
+}
+@keyframes symbolFloat{
+  0%,100%{ transform: translateY(0) rotate(-2deg); }
+  50%    { transform: translateY(-7px) rotate(2deg); }
+}
+.tarot-front .card-name{
+  position: relative; z-index: 2; font-family:'Fredoka', sans-serif; font-weight: 600;
+  font-size: clamp(14px, 2.4vw, 17px); color: #fff; letter-spacing: 1px; line-height: 1.25;
+  text-shadow: 0 0 22px rgba(255,224,102,.45); padding: 0 6px; text-transform: uppercase;
+}
+.tarot-front .flip-hint{
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 2;
+  font-family:'Caveat', cursive; font-size: 14px; color: var(--yellow); letter-spacing: .5px;
+  animation: hintPulse 2.4s ease-in-out infinite; white-space: nowrap;
+}
+@keyframes hintPulse{ 0%,100%{ opacity: .4; } 50%{ opacity: .95; } }
+.tarot-back{
+  background: radial-gradient(ellipse at 50% 50%, #4a3f55 0%, #2a1e3a 70%, #1a1025 100%);
+  transform: rotateY(180deg); padding: 26px 16px;
+}
+.tarot-back .back-content{ position: relative; z-index: 2; width: 100%; }
+.tarot-back h4{
+  font-family:'Fredoka', sans-serif; font-weight: 600;
+  font-size: clamp(13px, 2.1vw, 15px); color: var(--yellow); letter-spacing: 1px;
+  margin-bottom: 14px; text-transform: uppercase; line-height: 1.3;
+}
+.tarot-back .back-text{
+  font-family:'Quicksand', sans-serif; font-size: clamp(12.5px, 1.9vw, 14px);
+  color: #e0d8f0; line-height: 1.6; margin-bottom: 10px; font-style: italic;
+}
+.tarot-back ul{
+  list-style: none; padding: 0; margin: 6px 0 10px;
+  font-family:'Fredoka', sans-serif; font-size: clamp(11.5px, 1.8vw, 13px);
+  color: #fff; letter-spacing: .3px; line-height: 1.8;
+}
+.tarot-back ul li{ padding: 1px 0; }
+.tarot-back ul li::before{ content: '✦'; color: var(--yellow); margin-right: 6px; font-size: .75em; }
+.tarot-back .fill-line{
+  display: inline-block; min-width: 70px;
+  border-bottom: 1.5px dotted rgba(255,224,102,.7); padding: 0 8px 2px;
+  color: var(--yellow); font-style: italic;
+}
+.tarot-back .blessing{
+  font-family:'Fredoka', sans-serif; font-size: clamp(10px, 1.5vw, 11.5px);
+  color: var(--yellow); letter-spacing: .5px; margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid rgba(255,224,102,.3); text-transform: uppercase; line-height: 1.4;
+}
+.tarot-back .role{
+  font-family:'Quicksand', sans-serif; font-style: italic;
+  font-size: clamp(13px, 2vw, 14.5px); color: #fff; margin-bottom: 6px;
+}
+
+/* ============================================================
+   9. SHARED EXTRA SECTION
+   ============================================================ */
+.extra-section{
+  max-width:1100px; margin: clamp(50px, 8vw, 80px) auto; padding:0 18px;
+}
+
+/* ============================================================
+   10. TURNING POINTS — ROADMAP
+   ============================================================ */
+.roadmap{
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 20px 60px;
+  min-height: 260px;
+}
+.roadmap::before{
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  transform: translateX(-50%);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--lav) 0,
+    var(--lav) 14px,
+    transparent 14px,
+    transparent 28px
+  );
+  border-radius: 3px;
+  opacity: .55;
+  pointer-events: none;
+}
+.roadmap::after{
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 50%, rgba(200,182,255,.35), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.road-item{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 60px;
+  opacity: 0;
+  transform: scale(.6) translateY(20px);
+  pointer-events: none;
+  transition: opacity .6s ease, transform .6s cubic-bezier(.34,1.56,.64,1);
+}
+.road-item.unlocked{
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+.road-item:last-child{ margin-bottom: 20px; }
+
+.road-node{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.road-icon{
+  width: clamp(78px, 12vw, 96px);
+  height: clamp(78px, 12vw, 96px);
+  border-radius: 50%;
+  border: 5px solid #fff;
+  background: linear-gradient(135deg, var(--pink), var(--lav));
+  color: #fff;
+  font-size: clamp(34px, 6vw, 44px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 26px rgba(90,60,110,.28),
+    0 0 0 3px rgba(255,143,177,.25);
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+  position: relative;
+  z-index: 2;
+}
+.road-icon:hover,
+.road-item.active .road-icon{
+  transform: scale(1.12);
+  box-shadow:
+    0 16px 34px rgba(90,60,110,.35),
+    0 0 0 10px rgba(255,143,177,.2);
+}
+.road-icon::after{
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,143,177,.5);
+  animation: tpPulse 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes tpPulse{
+  0%,100%{ transform: scale(1); opacity: .55; }
+  50%    { transform: scale(1.18); opacity: 0; }
+}
+
+.road-label{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(12px, 2.4vw, 14px);
+  color: var(--ink);
+  text-align: center;
+  max-width: 200px;
+  line-height: 1.3;
+}
+.road-badge{
+  font-family:'Caveat', cursive;
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin-top: -4px;
+}
+
+/* ============================================================
+   THE HOVER POPUP CARD — now wide, fits everything, no scroll
+   ============================================================ */
+.road-card{
+  position: absolute;
+  bottom: calc(100% + 26px);
+  left: 50%;
+  transform: translateX(-50%) translateY(12px) scale(.96);
+  width: min(760px, 96vw);
+  background: linear-gradient(180deg, #ffffff, #fffaf3);
+  border-radius: 22px;
+  box-shadow:
+    0 30px 60px rgba(90,60,110,.3),
+    0 8px 18px rgba(90,60,110,.18),
+    inset 0 0 0 2px #fff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  transition: opacity .35s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
+  overflow: visible;
+}
+.road-item:hover .road-card,
+.road-item.active .road-card{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+  pointer-events: auto;
+}
+.road-card::after{
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border: 14px solid transparent;
+  border-top-color: #fffaf3;
+  border-bottom: 0;
+  filter: drop-shadow(0 4px 6px rgba(90,60,110,.18));
+}
+.road-card-scroll{
+  padding: 24px 26px 26px;
+  border-radius: 22px;
+}
+
+.road-card-badge{
+  display: inline-block;
+  font-family:'Fredoka', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--pink), var(--lav));
+  padding: 4px 12px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.road-card-title{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: clamp(17px, 3.5vw, 22px);
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+.road-card-sec{ margin-bottom: 14px; }
+.road-card-sec h4{
+  font-family:'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--pink);
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.road-card-sec p{
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.road-card-sec p:last-child{ margin-bottom: 0; }
+.road-card-sec p strong{ color: var(--ink); font-weight: 600; }
+.road-card-sec ul{ list-style: none; padding: 0; }
+.road-card-sec ul li{
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  padding-left: 20px;
+  position: relative;
+  margin-bottom: 6px;
+}
+.road-card-sec ul li::before{
+  content: '✦';
+  position: absolute;
+  left: 2px;
+  top: 0;
+  color: var(--pink);
+  font-size: 11px;
+}
+.road-card-media{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--pink-2);
+}
+.road-media-slot{
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--peach), var(--pink));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(90,60,110,.12);
+}
+.road-media-slot:nth-child(2){ background: linear-gradient(135deg, var(--sky), var(--lav)); }
+.road-media-slot.vid{ background: linear-gradient(135deg, var(--lav), var(--pink)); position: relative; }
+.road-media-slot img,
+.road-media-slot video{ width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Mute / unmute button for videos */
+.mute-btn{
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,.55);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  transition: background .2s, transform .2s;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 3px 8px rgba(0,0,0,.3);
+  padding: 0;
+  line-height: 1;
+}
+.mute-btn:hover{ background: rgba(255,143,177,.85); transform: scale(1.12); }
+.mute-btn:active{ transform: scale(.9); }
+
+/* ============================================================
+   11. YOUR MEMORIES — Instagram-style highlights
+   ============================================================ */
+.highlights-row{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(14px, 3vw, 28px);
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 10px 40px;
+}
+
+.highlight{
+  flex: 0 0 auto;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: inherit;
+  outline: none;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.highlight:hover{ transform: translateY(-5px); }
+.highlight:focus-visible{ outline: 3px solid var(--pink); outline-offset: 6px; border-radius: 20px; }
+.highlight:active{ transform: scale(.96); }
+
+.highlight-ring{
+  position: relative;
+  width: clamp(78px, 12vw, 104px);
+  height: clamp(78px, 12vw, 104px);
+  border-radius: 50%;
+  padding: 4px;
+  background: conic-gradient(
+    from 0deg,
+    #ff8fb1, #ffc2d6, #c8b6ff, #b8f2e6, #a9def9, #ffe066, #ffd6a5, #ff8fb1
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow .3s, filter .3s;
+}
+.highlight:hover .highlight-ring{
+  filter: brightness(1.06) saturate(1.2);
+  box-shadow: 0 10px 26px rgba(255,143,177,.45);
+}
+.highlight-inner{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #fff;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.highlight-inner img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  background: linear-gradient(135deg, var(--pink-2), var(--lav));
+}
+.highlight-name{
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(11.5px, 2.2vw, 13.5px);
+  color: var(--ink);
+  text-align: center;
+  max-width: 130px;
+  line-height: 1.3;
+}
+
+/* ============================================================
+   11b. STORY VIEWER — cute Instagram-style popup card
+   ============================================================ */
+.story-viewer{
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(30, 15, 45, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.story-viewer.show{ display: flex; opacity: 1; }
+
+.story-card{
+  position: relative;
+  width: min(380px, 88vw, calc(86vh * 9 / 16));
+  aspect-ratio: 9 / 16;
+  border-radius: 26px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 30%, #2a1a35 0%, #150a24 65%, #0a0612 100%);
+  box-shadow:
+    0 40px 80px rgba(0,0,0,.6),
+    0 0 0 6px rgba(255,255,255,.18),
+    0 0 60px rgba(255,143,177,.4),
+    0 0 100px rgba(200,182,255,.3);
+  display: flex;
+  flex-direction: column;
+  transform: scale(.85) translateY(20px);
+  opacity: 0;
+  transition: transform .45s cubic-bezier(.34,1.4,.64,1), opacity .35s ease;
+}
+.story-viewer.show .story-card{
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.story-progress{
+  display: flex;
+  gap: 3px;
+  padding: 14px 16px 0;
+  position: relative;
+  z-index: 10;
+}
+.story-bar{
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,.28);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.story-fill{
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #fff, #ffe0ec);
+  border-radius: 2px;
+  transition: width .1s linear;
+  box-shadow: 0 0 6px rgba(255,255,255,.6);
+}
+
+.story-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 10px;
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), transparent);
+}
+.story-header-left{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.story-avatar{
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255,143,177,.7);
+  background: linear-gradient(135deg, var(--pink), var(--lav));
+}
+.story-avatar img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.story-header-text{
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.story-name{
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: #fff;
+  letter-spacing: .2px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.story-counter{
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
+  font-size: 11.5px;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .3px;
+}
+.story-close{
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, transform .2s;
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+}
+.story-close:hover{ background: var(--pink); transform: rotate(90deg); }
+.story-close:active{ transform: scale(.9) rotate(90deg); }
+
+.story-media{
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0612;
+}
+.story-media img,
+.story-media video{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: opacity .25s ease;
+}
+.story-media.fading img,
+.story-media.fading video{
+  opacity: 0;
+}
+
+.story-nav-left,
+.story-nav-right{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 4;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: rgba(255,255,255,.55);
+  font-size: 28px;
+  font-weight: 300;
+  padding: 0 12px;
+  transition: color .2s, background .2s, opacity .2s;
+  user-select: none;
+  opacity: 0;
+}
+.story-media:hover .story-nav-left,
+.story-media:hover .story-nav-right{
+  opacity: 1;
+}
+.story-nav-left{ left: 0; width: 32%; justify-content: flex-start; }
+.story-nav-right{ right: 0; width: 68%; justify-content: flex-end; }
+.story-nav-left:hover{ color: #fff; background: linear-gradient(90deg, rgba(0,0,0,.45), transparent); }
+.story-nav-right:hover{ color: #fff; background: linear-gradient(270deg, rgba(0,0,0,.45), transparent); }
+
+.story-reactions{
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(15, 8, 25, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 8px 22px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.15);
+  z-index: 8;
+  transition: transform .25s ease;
+}
+.story-reactions.hidden{
+  transform: translateX(-50%) translateY(80px);
+  opacity: 0;
+  pointer-events: none;
+}
+.story-reaction{
+  position: relative;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s ease, background .2s;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.4));
+}
+.story-reaction:hover{
+  transform: scale(1.3) translateY(-2px);
+  background: rgba(255,255,255,.1);
+}
+.story-reaction:active{ transform: scale(.9); }
+.story-reaction.reacted{
+  animation: reactionPop .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes reactionPop{
+  0%{ transform: scale(1); }
+  50%{ transform: scale(1.5); }
+  100%{ transform: scale(1.05); }
+}
+.story-reaction .r-count{
+  position: absolute;
+  top: -4px; right: -4px;
+  background: var(--pink);
+  color: #fff;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 999px;
+  min-width: 15px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.35);
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity .2s, transform .2s;
+}
+.story-reaction .r-count.show{
+  opacity: 1;
+  transform: scale(1);
+}
+
+.story-float-emoji{
+  position: absolute;
+  font-size: 30px;
+  pointer-events: none;
+  z-index: 12;
+  animation: storyFloatUp 1.3s cubic-bezier(.34,1.2,.64,1) forwards;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.4));
+}
+@keyframes storyFloatUp{
+  0%{ transform: translate(-50%, 0) scale(.4); opacity: 0; }
+  20%{ transform: translate(-50%, -20px) scale(1.3); opacity: 1; }
+  100%{ transform: translate(-50%, -160px) scale(.9); opacity: 0; }
+}
+
+.story-tap-hint{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  font-family: 'Caveat', cursive;
+  font-size: 20px;
+  color: rgba(255,255,255,.85);
+  text-align: center;
+  pointer-events: none;
+  animation: storyHintFade 4s ease forwards;
+  white-space: nowrap;
+  text-shadow: 0 2px 12px rgba(0,0,0,.9);
+  padding: 8px 18px;
+  background: rgba(0,0,0,.4);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+@keyframes storyHintFade{
+  0%{ opacity: 0; transform: translate(-50%, -50%) scale(.9); }
+  15%{ opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  75%{ opacity: 1; }
+  100%{ opacity: 0; transform: translate(-50%, -50%) scale(.95); }
+}
+
+/* ============================================================
+   12. YOUR BEAUTY
+   ============================================================ */
+.beauty-grid{
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+  gap: clamp(24px, 3.5vw, 44px); max-width: 1100px;
+  margin: 0 auto; padding: 20px 10px 40px;
+}
+.beauty-card{
+  flex: 0 0 clamp(170px, 22vw, 230px);
+  text-align: center;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.beauty-card:nth-child(odd)  { transform: rotate(-1.4deg); }
+.beauty-card:nth-child(even) { transform: rotate(1.4deg);  }
+.beauty-card:hover{ transform: rotate(0) translateY(-8px); }
+
+.beauty-frame{
+  position: relative; width: 100%; aspect-ratio: 3 / 4;
+  padding: clamp(10px, 1.4vw, 14px);
+  border-radius: 12px;
+  background: linear-gradient(145deg,
+    #fff8ee 0%, #f0dbb8 18%, #e0bd93 42%,
+    #c68f52 68%, #96693a 88%, #6b4a28 100%);
+  box-shadow:
+    0 22px 40px rgba(90,60,110,.25), 0 6px 14px rgba(90,60,110,.18),
+    inset 0 2px 6px rgba(255,255,255,.75), inset 0 -4px 8px rgba(80,50,20,.4);
+  transition: box-shadow .35s;
+}
+.beauty-card:hover .beauty-frame{
+  box-shadow:
+    0 28px 52px rgba(90,60,110,.32), 0 8px 18px rgba(90,60,110,.22),
+    inset 0 2px 6px rgba(255,255,255,.75), inset 0 -4px 8px rgba(80,50,20,.4);
+}
+.beauty-frame::before{
+  content: ''; position: absolute;
+  inset: clamp(10px, 1.4vw, 14px); border-radius: 5px;
+  border: 1.5px solid rgba(255,244,210,.75);
+  box-shadow: inset 0 0 10px rgba(120,80,40,.45);
+  pointer-events: none; z-index: 2;
+}
+.beauty-photo{
+  position: relative; width: 100%; height: 100%;
+  border-radius: 6px; overflow: hidden;
+  background: linear-gradient(135deg, var(--pink), var(--lav));
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(52px, 9vw, 76px); color: #fff;
+  box-shadow: inset 0 0 16px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.4);
+}
+.beauty-photo img{ width:100%; height:100%; object-fit: cover; display: block; }
+.beauty-photo::after{
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 38%; background: linear-gradient(180deg, rgba(255,255,255,.4), transparent);
+  pointer-events: none;
+}
+.beauty-card h4{
+  font-family:'Fredoka', sans-serif; font-weight: 600;
+  font-size: clamp(15.5px, 2.2vw, 18px); margin: 18px 0 6px; color: var(--pink);
+}
+.beauty-card p{
+  font-size: clamp(12px, 1.55vw, 13.5px); line-height: 1.65;
+  color: var(--ink-soft); font-style: italic; padding: 0 4px;
+}
+
+/* ============================================================
+   13. FOOTER
+   ============================================================ */
+.footer-note{
+  text-align:center; padding: 60px 20px 30px;
+  font-family:'Caveat', cursive; font-size: 22px; color:var(--ink-soft);
+}
+
+/* ============================================================
+   14. RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px){
+  .tarot-grid{ grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 720px){
+  .life-card{ padding: 12px 10px 16px; }
+  .life-card p{ display:none; }
+  .card-image{ border-radius: 14px; }
+  .tarot-grid{ grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .road-card{ width: min(560px, 94vw); }
+  .story-viewer{ padding: 16px; }
+}
+@media (max-width: 560px){
+  .life-grid{ grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .moments-strip{ grid-template-columns: repeat(2, 1fr); }
+  .moments-strip .video-ph:nth-child(3){ grid-column: 1 / -1; }
+  .beauty-grid{ gap: 20px; }
+  .beauty-card{ flex: 0 0 clamp(150px, 42vw, 190px); }
+  .beauty-card:nth-child(odd),
+  .beauty-card:nth-child(even){ transform: rotate(0); }
+  .road-card{ width: 94vw; }
+  .story-card{ width: min(340px, 94vw); }
+}
+@media (max-width: 420px){
+  .tarot-grid{ grid-template-columns: 1fr; max-width: 280px; margin: 0 auto; }
+  .road-card{ width: 94vw; }
+}
+@media (max-width: 380px){
+  .life-grid{ grid-template-columns: 1fr; }
+  .moments-strip{ grid-template-columns: 1fr; }
+  .moments-strip .video-ph:nth-child(3){ grid-column: auto; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="blob-c" aria-hidden="true"></div>
+
+<!-- HEADER + TOP BALLOON PHOTOS -->
+<header class="page-header">
+  <h1>Vic Site 🌷</h1>
+  <p>Every part of you, celebrated.</p>
+</header>
+
+<div class="balloon-row">
+  <div>
+    <div class="balloon">
+      <div class="balloon-photo"><img src="images/img1.jpg" alt="White Baby"></div>
+      <div class="balloon-knot"></div><div class="balloon-string"></div>
+    </div>
+    <p class="balloon-caption">Happy</p>
+  </div>
+  <div>
+    <div class="balloon">
+      <div class="balloon-photo"><img src="images/imgM.jpg" alt="Cake"></div>
+      <div class="balloon-knot"></div><div class="balloon-string"></div>
+    </div>
+    <p class="balloon-caption">Birthday</p>
+  </div>
+  <div>
+    <div class="balloon">
+      <div class="balloon-photo"><img src="images/img2.jpg" alt="Red Baby"></div>
+      <div class="balloon-knot"></div><div class="balloon-string"></div>
+    </div>
+    <p class="balloon-caption">Victoria</p>
+  </div>
+</div>
+
+<!-- LITTLE MOMENTS -->
+<h2 class="section-title">Little <span>Moments</span> of You</h2>
+<p class="section-sub">tiny moving memories</p>
+<div class="moments-strip">
+  <div class="video-ph"><video autoplay muted loop playsinline src="images/vd1.mp4"></video></div>
+  <div class="video-ph"><video autoplay muted loop playsinline src="images/vd2.mp4"></video></div>
+  <div class="video-ph"><video autoplay muted loop playsinline src="images/vd3.mp4"></video></div>
+</div>
+
+<!-- PARTS OF LIFE -->
+<h2 class="section-title">Your <span>Parts of Life</span></h2>
+<p class="section-sub">each one, a whole world</p>
+<div class="life-grid">
+  <div class="life-card">
+    <div class="card-image"><img src="images/img3.jpg" alt="Creativity"><span class="placeholder-emoji">🎨</span></div>
+    <h3>The Creativity</h3><p>Your mind, your hands, everything you make.</p>
+    <a class="explore-btn" href="creativity.html">Explore</a>
+  </div>
+  <div class="life-card">
+    <div class="card-image"><img src="images/img106.jpg" alt="God"><span class="placeholder-emoji">🕊️</span></div>
+    <h3>The God</h3><p>Your faith, your soul, your quiet strength.</p>
+    <a class="explore-btn" href="god.html">Explore</a>
+  </div>
+  <div class="life-card">
+    <div class="card-image"><img src="images/img5.jpg" alt="Music"><span class="placeholder-emoji">🎵</span></div>
+    <h3>The Music</h3><p>Your heart, your rhythm, your songs.</p>
+    <a class="explore-btn" href="music.html">Explore</a>
+  </div>
+  <div class="life-card">
+    <div class="card-image"><img src="images/img6.jpg" alt="Family and Love"><span class="placeholder-emoji">🏡</span></div>
+    <h3>Family &amp; Love</h3><p>Your home, your people, your warmth.</p>
+    <a class="explore-btn" href="family.html">Explore</a>
+  </div>
+  <div class="life-card">
+    <div class="card-image"><img src="images/img7.jpg" alt="Leadership"><span class="placeholder-emoji">🌟</span></div>
+    <h3>Leadership &amp; Community</h3><p>Your courage, your duties, your impact.</p>
+    <a class="explore-btn" href="leadership.html">Explore</a>
+  </div>
+  <div class="life-card">
+    <div class="card-image"><img src="images/img8.jpg" alt="Income"><span class="placeholder-emoji">💎</span></div>
+    <h3>The Income</h3><p>Your drive, your potential, your future.</p>
+    <a class="explore-btn" href="income.html">Explore</a>
+  </div>
+</div>
+
+<!-- FUTURE — TAROT CARDS -->
+<section class="future-section">
+  <div class="future-header">
+    <h2>The <span>Future</span> Is Loading</h2>
+    <p>six cards still being written</p>
+    <div class="line"></div>
+  </div>
+  <div class="tarot-grid">
+    <button class="tarot-card" type="button" aria-label="Flip The Career card">
+      <div class="tarot-inner">
+        <div class="tarot-face tarot-front">
+          <div class="future-label">Future</div>
+          <div class="symbol">🎼</div>
+          <div class="card-name">The Career</div>
+          <div class="flip-hint">tap to reveal</div>
+        </div>
+        <div class="tarot-face tarot-back">
+          <div class="back-content">
+            <h4>Your Freedom</h4>
+            <p class="back-text">Your passion and your skills will give you freedom.</p>
+            <p class="role">Meant to be a</p>
+            <ul><li>Music Teacher</li><li>Musician</li><li>Pianist</li></ul>
+            <p class="role">Can also enjoy doing</p>
+            <ul><li>Cruise Ship Hostess</li><li>Tourist Guide</li></ul>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <button class="tarot-card" type="button" aria-label="Flip The Dreams card">
+      <div class="tarot-inner">
+        <div class="tarot-face tarot-front">
+          <div class="future-label">Future</div>
+          <div class="symbol">🌍</div>
+          <div class="card-name">The Dreams</div>
+          <div class="flip-hint">tap to reveal</div>
+        </div>
+        <div class="tarot-face tarot-back">
+          <div class="back-content">
+            <h4>Go Ahead</h4>
+            <p class="back-text">Do everything to achieve the dreams of your life.</p>
+            <ul><li>World Tour</li><li>Volunteering</li></ul>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <button class="tarot-card" type="button" aria-label="Flip The Destiny card">
+      <div class="tarot-inner">
+        <div class="tarot-face tarot-front">
+          <div class="future-label">Future</div>
+          <div class="symbol">⭐</div>
+          <div class="card-name">The Destiny</div>
+          <div class="flip-hint">tap to reveal</div>
+        </div>
+        <div class="tarot-face tarot-back">
+          <div class="back-content">
+            <h4>You Are Meant</h4>
+            <p class="back-text">You are meant to be someone. Never lose faith.</p>
+            <ul>
+              <li>Serve People with Creativity</li>
+              <li>And what? <span class="fill-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <button class="tarot-card" type="button" aria-label="Flip The Diamond Ring card">
+      <div class="tarot-inner">
+        <div class="tarot-face tarot-front">
+          <div class="future-label">Future</div>
+          <div class="symbol">💍</div>
+          <div class="card-name">The Diamond Ring</div>
+          <div class="flip-hint">tap to reveal</div>
+        </div>
+        <div class="tarot-face tarot-back">
+          <div class="back-content">
+            <h4>Meant to Marry a…</h4>
+            <ul>
+              <li>5'8</li><li>Brown Complexity</li><li>Indian Ancestry</li>
+              <li>Bearded</li><li>Hairy Man</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <button class="tarot-card" type="button" aria-label="Flip The Diapers card">
+      <div class="tarot-inner">
+        <div class="tarot-face tarot-front">
+          <div class="future-label">Future</div>
+          <div class="symbol">👶</div>
+          <div class="card-name">The Diapers</div>
+          <div class="flip-hint">tap to reveal</div>
+        </div>
+        <div class="tarot-face tarot-back">
+          <div class="back-content">
+            <h4>One Day</h4>
+            <p class="back-text">Will one day have to change the diapers of a little fella.</p>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <button class="tarot-card" type="button" aria-label="Flip The Legacy card">
+      <div class="tarot-inner">
+        <div class="tarot-face tarot-front">
+          <div class="future-label">Future</div>
+          <div class="symbol">🌳</div>
+          <div class="card-name">The Legacy</div>
+          <div class="flip-hint">tap to reveal</div>
+        </div>
+        <div class="tarot-face tarot-back">
+          <div class="back-content">
+            <h4>What Will You Leave</h4>
+            <p class="back-text">What will you leave in this world as yours?</p>
+            <p class="back-text" style="text-align:center;">
+              <span class="fill-line" style="min-width:120px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </p>
+            <div class="blessing">God will bless you to make that happen</div>
+          </div>
+        </div>
+      </div>
+    </button>
+  </div>
+</section>
+
+<!-- YOUR TURNING POINTS — ROADMAP -->
+<section class="extra-section">
+  <h2 class="section-title">Your <span>Turning Points</span></h2>
+  <p class="section-sub">walk your path — hover to read, tap to unlock the next</p>
+
+  <div class="roadmap" id="roadmap"></div>
+</section>
+
+<!-- YOUR MEMORIES — Instagram-style highlights -->
+<section class="extra-section">
+  <h2 class="section-title">Your <span>Memories</span></h2>
+  <p class="section-sub">tap a highlight — relive the moments</p>
+
+  <div class="highlights-row" id="highlightsRow"></div>
+</section>
+
+<!-- Story viewer (cute popup card) -->
+<div class="story-viewer" id="storyViewer">
+  <div class="story-card">
+    <div class="story-progress" id="storyProgress"></div>
+
+    <div class="story-header">
+      <div class="story-header-left">
+        <div class="story-avatar" id="storyAvatar">
+          <img src="" alt="">
+        </div>
+        <div class="story-header-text">
+          <span class="story-name" id="storyName"></span>
+          <span class="story-counter" id="storyCounter"></span>
+        </div>
+      </div>
+      <button class="story-close" onclick="closeStory()" aria-label="Close">✕</button>
+    </div>
+
+    <div class="story-media" id="storyMedia">
+      <div class="story-nav-left" onclick="prevStory(event)">‹</div>
+      <div class="story-nav-right" onclick="nextStory(event)">›</div>
+
+      <div class="story-reactions" id="storyReactions">
+        <button class="story-reaction" data-key="love" aria-label="Love">
+          ❤️<span class="r-count">0</span>
+        </button>
+        <button class="story-reaction" data-key="haha" aria-label="Haha">
+          😂<span class="r-count">0</span>
+        </button>
+        <button class="story-reaction" data-key="wow" aria-label="Wow">
+          😮<span class="r-count">0</span>
+        </button>
+        <button class="story-reaction" data-key="sad" aria-label="Sad">
+          😢<span class="r-count">0</span>
+        </button>
+        <button class="story-reaction" data-key="like" aria-label="Like">
+          👍<span class="r-count">0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- YOUR BEAUTY -->
+<section class="extra-section">
+  <h2 class="section-title">Your <span>Beauty</span></h2>
+  <p class="section-sub">I'm in love with you...and all these little things</p>
+
+  <div class="beauty-grid">
+    <div class="beauty-card">
+      <div class="beauty-frame"><div class="beauty-photo"><img src="images/img9.jpg" alt="Your Eyes"></div></div>
+      <h4>Your Eyes</h4>
+      <p>When the sun shines on your face and your eyes shine like a golden lantern shimmering bright in the forest. Those rabbit eyes, never knew those eyes filled with love would ever dawn upon me.</p>
+    </div>
+    <div class="beauty-card">
+      <div class="beauty-frame"><div class="beauty-photo"><img src="images/img10.jpg" alt="Your Smile"></div></div>
+      <h4>Your Smile</h4>
+      <p>I don't know when you felt it for me, but I felt "oh, I'm in love with this woman" when I saw you staring out of the window that day, your whole energy is full of life, your smile is bright and full of life.</p>
+    </div>
+    <div class="beauty-card">
+      <div class="beauty-frame"><div class="beauty-photo"><img src="images/img11.jpg" alt="Your Hair"></div></div>
+      <h4>Your Hair</h4>
+      <p>Honestly, having you as my first ever girlfriend, is beyond comprehension, those are pure beauty. When I saw your hair untied for the first time, it was the second time I fell in love with you in an overwhelming manner. Never knew that one day I would be tucking your hair back your ear one day.</p>
+    </div>
+    <div class="beauty-card">
+      <div class="beauty-frame"><div class="beauty-photo"><img src="images/img12.jpg" alt="Your Lips"></div></div>
+      <h4>Your Lips</h4>
+      <p>I still remember the taste of our first kiss, it was my first kiss, it was your first kiss, and when those two lips started getting intertwined, never knew that the silk would get entangled forever.</p>
+    </div>
+    <div class="beauty-card">
+      <div class="beauty-frame"><div class="beauty-photo"><img src="images/img13.jpg" alt="Your Hands"></div></div>
+      <h4>Your Hands</h4>
+      <p>We held each other for the first time, in the classroom, full of people, last row. It was winter, and your hands were shivering, so were mine, hearts pounding if the teacher would saw us holding our hands together, yet we never left out hands.</p>
+    </div>
+    <div class="beauty-card">
+      <div class="beauty-frame"><div class="beauty-photo"><img src="images/img14.jpg" alt="Your Feet"></div></div>
+      <h4>Your Feet</h4>
+      <p>Those beautiful little feet, walks with me all the time, those get tired, but you never stop. I like kissing them always.</p>
+    </div>
+  </div>
+</section>
+
+<div class="footer-note">Made with love, for you. 💕</div>
+
+<script>
+/* ============================================================
+   1. VIDEO PLACEHOLDERS — tap to play/pause
+   ============================================================ */
+(function videoPlaceholders(){
+  document.querySelectorAll('.video-ph').forEach(el => {
+    el.addEventListener('click', function(){
+      const v = this.querySelector('video');
+      if (v){ if (v.paused) v.play(); else v.pause(); }
+    });
+  });
+})();
+
+/* ============================================================
+   2. HIDE fallback emoji once image loads
+   ============================================================ */
+(function hidePlaceholderWhenImageLoads(){
+  document.querySelectorAll('.card-image img').forEach(img => {
+    const hide = () => {
+      const emoji = img.parentElement.querySelector('.placeholder-emoji');
+      if (emoji) emoji.style.display = 'none';
+    };
+    img.addEventListener('load', hide);
+    if (img.complete && img.naturalWidth > 0) hide();
+  });
+})();
+
+/* ============================================================
+   3. TAROT FLIP
+   ============================================================ */
+(function tarotFlip(){
+  document.querySelectorAll('.tarot-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); card.classList.toggle('flipped'); }
+    });
+  });
+})();
+
+/* ============================================================
+   4. TURNING POINTS DATA
+   ============================================================ */
+const TP_DATA = {
+  dengue: {
+    badge: 'Age 8', icon: '🦟',
+    title: 'The Dengue That Changed Everything',
+    story: [
+      "You were 8 years old. Dengue came and it took everything out of you. You were so scared, so small, so tired — adults had to hold you down for injections and drips. It was a trauma your body remembers.",
+      "But you came out of it <strong>stronger</strong>. You were never afraid of injections again — and you were never afraid of most other things in life again either.",
+      "And something small but important changed too: you had never eaten meat before that time. You started eating it after."
+    ],
+    learned: [
+      "The body can survive almost anything.",
+      "Fear of one thing doesn't have to mean fear of everything.",
+      "You rebuilt yourself from the ashes of that illness."
+    ],
+    media: [
+      '<video src="images/vd3.mp4"></video>',
+      '<img src="images/img90.jpg" alt="">',
+      '<img src="images/img70.jpg" alt="">'
+    ]
+  },
+  covid: {
+    badge: 'Age 14 — 2020', icon: '🏠',
+    title: 'The Lockdown That Rebuilt You',
+    story: [
+      "2020. The world locked down. And inside those quiet walls, you found something you didn't know you were missing — <strong>yourself</strong>.",
+      "You read. You finished the whole bookshelf. You improved your English, deepened your knowledge.",
+      "You spent real time with your sisters — you laughed, you fought, you created. You learned to crochet, and that little skill would later become your first ever source of income.",
+      "You painted for the first time. You did TikTok with them. You made postcards and handmade things."
+    ],
+    learned: [
+      "You can be alone with yourself and love it.",
+      "Skills built in quiet moments become the loudest in your life.",
+      "Sisters, books, and time — the real treasures."
+    ],
+    media: [
+      '<video src="images/vd8.mp4"></video>',
+      '<img src="images/img59.jpg" alt="">',
+      '<img src="images/img60.jpg" alt="">'
+    ]
+  },
+  musicLeader: {
+    badge: '2021 → 2026', icon: '🎼',
+    title: 'From Music Leader to Youth Leader',
+    story: [
+      "In 2021, you became the church's music leader. You did not know what to do. You had no idea how to present, how to lead, how to carry that weight.",
+      "But slowly — year by year, service by service — you learned. By 2026, you had become the whole youth team leader.",
+      "You learned what it means to <strong>struggle and sacrifice</strong> as a leader."
+    ],
+    learned: [
+      "Leadership is not knowing everything — it's being willing to learn.",
+      "Sacrifice is the price of care.",
+      "You learned to carry weight for others, not just yourself."
+    ],
+    media: [
+      '<video src="images/vd10.mp4"></video>',
+      '<img src="images/img94.jpg" alt="">',
+      '<img src="images/img104.jpg" alt="">'
+    ]
+  },
+  revolution: {
+    badge: '2021', icon: '🔥',
+    title: 'The Revolution',
+    story: [
+      "2021. The military coup. The protests. And you, still young, still figuring out the world — chose to stand with the right.",
+      "You experienced first-hand what it takes to hold your ground.",
+      "Your communication improved. Your social skills sharpened. You captured the whole energy of that time in your heart. <strong>For life.</strong>"
+    ],
+    learned: [
+      "What it costs to stand with the right.",
+      "How to hold your ground when no one sees what you see.",
+      "How to communicate with people who are not ready to hear you."
+    ],
+    media: [
+      '<video src="images/vd4.mp4"></video>',
+      '<img src="images/img72.jpg" alt="">',
+      '<img src="images/img107.jpg" alt="">'
+    ]
+  },
+  love: {
+    badge: 'Your Love Life', icon: '💗',
+    title: 'And Then I Walked In',
+    story: [
+      "Before me, there was heartbreak. A controller who wanted to keep you small. A story that ended before it started, in a public place — it felt like humiliation.",
+      "There was someone younger who had zero commitment, zero anything.",
+      "<strong>Then I made my entry.</strong> And I showed you what love actually looks like. Laughing together. Prioritizing each other. Your first kiss. Your first real intimate connection — the first time for both of us."
+    ],
+    learned: [
+      "What love is NOT.",
+      "What love IS.",
+      "That you deserve to be prioritized, respected, and held."
+    ],
+    media: [
+      '<video src="images/vd17.mp4"></video>',
+      '<img src="images/img135.jpg" alt="">',
+      '<img src="images/img130.jpg" alt="">'
+    ]
+  },
+  god: {
+    badge: 'Baptism — Age 17', icon: '🕊️',
+    title: 'Rebirth',
+    story: [
+      "You had always been close to God. But the day you were baptized, everything changed. You did not just become different — you became <strong>someone entirely different</strong>.",
+      "And then Satan tried to pull you back. He whispered. He tempted. He tried everything.",
+      "But you refused to let go. With your willpower and your discipline, you went over every distraction and focused on yourself and God."
+    ],
+    learned: [
+      "Rebirth is real.",
+      "Faith is not passive — it's a fight you win every day.",
+      "Discipline is the deepest form of self-love."
+    ],
+    media: [
+      '<video src="images/vd1.mp4"></video>',
+      '<img src="images/img108.jpg" alt="">',
+      '<img src="images/img111.jpg" alt="">'
+    ]
+  },
+  musicPassion: {
+    badge: 'A Lifelong Love', icon: '🎻',
+    title: 'The Music That Was Always Yours',
+    story: [
+      "You were familiar with music since before you were born. In your mother's womb, music was already finding you.",
+      "You started learning violin at 8-9 years old. But after 2021, when you became the music leader, that is when the <strong>actual passion</strong> began.",
+      "That passion made you a better violin player. It pushed you to develop piano skills, train your vocals, and study theoretical music.",
+      "You have always wanted to become a pianist like Yuja Wang. <strong>Never give up. Always keep trying.</strong>"
+    ],
+    learned: [
+      "Passion isn't discovered — it's built through practice.",
+      "Music is not a hobby, it's a language you speak.",
+      "No dream is too big — not even Yuja Wang big."
+    ],
+    media: [
+      '<video src="images/vd23.mp4"></video>',
+      '<video src="images/vd24.mp4"></video>',
+      '<video src="images/vd21.mp4"></video>'
+    ]
+  },
+  afterGrade12: {
+    badge: 'After Grade 12', icon: '🌌',
+    title: 'Finally, You',
+    story: [
+      "Grade 12 was brutal. It was crushing. It drained every single bit of you.",
+      "But after it, you finally had time — real time — to give to yourself. You started researching things you were actually interested in: astronomy, space, nature, biology, the environment.",
+      "You trained in yoga again. And you became creative again: crochet, paintings, handmade necklaces, drawings, music practice."
+    ],
+    learned: [
+      "Rest is productive.",
+      "Curiosity is a form of recovery.",
+      "Being yourself is the most important thing."
+    ],
+    media: [
+      '<video src="images/vd2.mp4"></video>',
+      '<img src="images/img8.jpg" alt="">',
+      '<img src="images/img38.jpg" alt="">'
+    ]
+  },
+  income: {
+    badge: '2026', icon: '💰',
+    title: 'Making Your Own Money',
+    story: [
+      "Your first source of income was crochets — the same thing you learned in the lockdown. You loved doing it, and it turned out you loved <strong>selling</strong> it too.",
+      "Customized orders. Skills you developed over a long period of time. You started doing this seriously in 2026.",
+      "Later you also started selling paintings, handmade necklaces, and other things you made."
+    ],
+    learned: [
+      "Your hands can feed you.",
+      "Independence is worth more than comfort.",
+      "You don't need to ask anyone for anything."
+    ],
+    media: [
+      '<video src="images/vd11.mp4"></video>',
+      '<img src="images/img3.jpg" alt="">',
+      '<img src="images/img56.jpg" alt="">'
+    ]
+  }
+};
+
+/* ============================================================
+   5. BUILD ROADMAP
+   ============================================================ */
+let roadmapUnlocked = parseInt(sessionStorage.getItem('roadmapUnlocked') || '1', 10);
+const TOTAL_TP = Object.keys(TP_DATA).length;
+
+function buildRoadmap(){
+  const rm = document.getElementById('roadmap');
+  if (!rm) return;
+  const keys = Object.keys(TP_DATA);
+  rm.innerHTML = '';
+
+  keys.forEach((key, index) => {
+    const tp = TP_DATA[key];
+    const item = document.createElement('div');
+    item.className = 'road-item';
+    item.dataset.index = index;
+    if (index < roadmapUnlocked) item.classList.add('unlocked');
+
+    const mediaHTML = tp.media.map((m) => {
+      const isVideo = m.includes('<video');
+      const isHTML = m.trim().startsWith('<');
+      const slotClass = isVideo ? 'road-media-slot vid' : 'road-media-slot';
+
+      if (isVideo){
+        const enhanced = m.replace(
+          /<video\b/,
+          '<video autoplay muted loop playsinline'
+        );
+        return `<div class="${slotClass}">
+          ${enhanced}
+          <button class="mute-btn" onclick="toggleMute(event, this)" aria-label="Toggle sound" title="Mute / unmute">🔇</button>
+        </div>`;
+      }
+
+      return `<div class="${slotClass}">${isHTML ? m : m}</div>`;
+    }).join('');
+
+    item.innerHTML = `
+      <div class="road-node">
+        <button class="road-icon" aria-label="Open ${tp.title}">
+          <span>${tp.icon}</span>
+        </button>
+        <div class="road-label">${tp.title}</div>
+        <div class="road-badge">${tp.badge}</div>
+
+        <div class="road-card">
+          <div class="road-card-scroll">
+            <span class="road-card-badge">${tp.badge}</span>
+            <h3 class="road-card-title">${tp.title}</h3>
+
+            <div class="road-card-sec">
+              <h4>📖 The Story</h4>
+              ${tp.story.map(p => `<p>${p}</p>`).join('')}
+            </div>
+
+            <div class="road-card-sec">
+              <h4>✨ What You Learned</h4>
+              <ul>${tp.learned.map(l => `<li>${l}</li>`).join('')}</ul>
+            </div>
+
+            <div class="road-card-media">
+              ${mediaHTML}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    rm.appendChild(item);
+  });
+
+  attachRoadHandlers();
+}
+
+function attachRoadHandlers(){
+  document.querySelectorAll('.road-item').forEach(item => {
+    const icon = item.querySelector('.road-icon');
+    const index = parseInt(item.dataset.index, 10);
+
+    item.addEventListener('mouseenter', () => {
+      if (item.classList.contains('unlocked')) item.classList.add('active');
+    });
+    item.addEventListener('mouseleave', () => {
+      item.classList.remove('active');
+    });
+
+    icon.addEventListener('click', (e) => {
+      e.stopPropagation();
+      item.classList.toggle('active');
+      if (index === roadmapUnlocked - 1 && roadmapUnlocked < TOTAL_TP){
+        roadmapUnlocked++;
+        sessionStorage.setItem('roadmapUnlocked', roadmapUnlocked);
+        const nextItem = document.querySelector(`.road-item[data-index="${index + 1}"]`);
+        if (nextItem){
+          setTimeout(() => {
+            nextItem.classList.add('unlocked');
+            setTimeout(() => nextItem.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+          }, 300);
+        }
+      }
+    });
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.road-node')){
+    document.querySelectorAll('.road-item.active').forEach(i => i.classList.remove('active'));
+  }
+});
+
+/* Mute / unmute a video inside a road-media-slot */
+function toggleMute(e, btn){
+  if (e) e.stopPropagation();
+  const video = btn.parentElement.querySelector('video');
+  if (!video) return;
+  video.muted = !video.muted;
+  btn.textContent = video.muted ? '🔇' : '🔊';
+  if (video.paused){
+    video.play().catch(() => {});
+  }
+}
+
+buildRoadmap();
+
+/* ============================================================
+   6. YOUR MEMORIES — Instagram-style highlights + cute story viewer
+   ============================================================ */
+
+const R = (a, b) => Array.from({length: b - a + 1}, (_, i) => a + i);
+
+const HIGHLIGHTS = [
+  {
+    id: 'church',
+    name: 'Church & Friends',
+    cover: 7,
+    images: [101, 4, 7, 61, 62, 72, 80, 89, 81, 94, 96, 100, 104, 106, 107, 108, 109, 110, 111, 115, 117],
+    videos: [3, 5, 10, 13]
+  },
+  {
+    id: 'you',
+    name: 'You',
+    cover: 15,
+    images: [68, 71, 80, 92, 84, 85, 86, 83, 82, 61, 63, 60, 65, 66, 4, 16, 18, 12, 95, 96, 97, 99, 101, 102, 103, 105, 108, 113, 116, 117],
+    videos: [1, 2, 3, 4, 5, 6, 7, 11, 12]
+  },
+  {
+    id: 'us',
+    name: 'Us',
+    cover: 184,
+    images: [184].concat(R(118, 155)),
+    videos: [14, 15, 16, 17],
+    videoAfterIndex: 13
+  },
+  {
+    id: 'family',
+    name: 'Family',
+    cover: 78,
+    images: [89, 78, 80, 60, 58, 59, 61, 62, 81, 83, 86, 71, 87, 89, 63, 6, 107],
+    videos: [8, 9]
+  },
+  {
+    id: 'things',
+    name: 'Your Things',
+    cover: 43,
+    images: [3, 8, 15].concat(R(17, 57)),
+    videos: []
+  },
+  {
+    id: 'childhood',
+    name: 'Childhood',
+    cover: 74,
+    images: [67, 70, 75, 1, 2, 68, 69, 71, 76, 77, 78, 79, 80, 81, 91, 92, 84, 85, 86, 89, 88, 83, 82, 61, 63],
+    videos: []
+  }
+];
+
+function buildItems(h){
+  const items = h.images.map(n => ({ type: 'image', src: `images/img${n}.jpg` }));
+  if (!h.videos || h.videos.length === 0) return items;
+
+  const minIdx = h.videoAfterIndex != null ? h.videoAfterIndex : 0;
+  const range = Math.max(1, items.length - minIdx);
+  const step = Math.max(1, Math.floor(range / (h.videos.length + 1)));
+
+  for (let i = h.videos.length - 1; i >= 0; i--){
+    const pos = Math.min(items.length, minIdx + step * (i + 1));
+    items.splice(pos, 0, { type: 'video', src: `images/vd${h.videos[i]}.mp4` });
+  }
+  return items;
+}
+
+function buildHighlights(){
+  const row = document.getElementById('highlightsRow');
+  if (!row) return;
+
+  row.innerHTML = HIGHLIGHTS.map(h => {
+    const cover = `images/img${h.cover}.jpg`;
+    return `
+      <button class="highlight" type="button" data-h="${h.id}" aria-label="Open ${h.name}">
+        <div class="highlight-ring">
+          <div class="highlight-inner">
+            <img src="${cover}" alt="${h.name}" onerror="this.style.opacity='0'">
+          </div>
+        </div>
+        <div class="highlight-name">${h.name}</div>
+      </button>
+    `;
+  }).join('');
+
+  row.querySelectorAll('.highlight').forEach(btn => {
+    btn.addEventListener('click', () => openStory(btn.dataset.h));
+  });
+}
+
+let storyState = {
+  highlight: null,
+  index: 0,
+  rafId: null,
+  videoFallbackTimer: null
+};
+
+let storyReactions = { love: 0, haha: 0, wow: 0, sad: 0, like: 0 };
+
+function openStory(id){
+  const h = HIGHLIGHTS.find(x => x.id === id);
+  if (!h) return;
+
+  storyState.highlight = { ...h, items: buildItems(h) };
+  storyState.index = 0;
+
+  storyReactions = { love: 0, haha: 0, wow: 0, sad: 0, like: 0 };
+  renderReactions();
+
+  const viewer = document.getElementById('storyViewer');
+  viewer.classList.add('show');
+  document.body.style.overflow = 'hidden';
+
+  document.getElementById('storyName').textContent = h.name;
+  document.getElementById('storyAvatar').querySelector('img').src = `images/img${h.cover}.jpg`;
+
+  renderBars();
+  showItem(0, true);
+}
+
+function closeStory(){
+  clearStoryTimers();
+  document.getElementById('storyViewer').classList.remove('show');
+  document.body.style.overflow = '';
+  document.querySelectorAll('.story-reaction .r-count').forEach(c => c.classList.remove('show'));
+}
+
+function clearStoryTimers(){
+  if (storyState.rafId){ cancelAnimationFrame(storyState.rafId); storyState.rafId = null; }
+  if (storyState.videoFallbackTimer){ clearTimeout(storyState.videoFallbackTimer); storyState.videoFallbackTimer = null; }
+  const media = document.getElementById('storyMedia');
+  media.querySelectorAll('video').forEach(v => { try { v.pause(); } catch(e){} });
+}
+
+function renderBars(){
+  const bar = document.getElementById('storyProgress');
+  bar.innerHTML = storyState.highlight.items.map(() => `
+    <div class="story-bar"><div class="story-fill"></div></div>
+  `).join('');
+}
+
+function showItem(index, isFirst){
+  clearStoryTimers();
+  storyState.index = index;
+
+  const items = storyState.highlight.items;
+  if (index >= items.length){ closeStory(); return; }
+
+  const item = items[index];
+  const media = document.getElementById('storyMedia');
+
+  document.getElementById('storyCounter').textContent = `${index + 1} / ${items.length}`;
+
+  const fills = document.querySelectorAll('.story-bar .story-fill');
+  fills.forEach((f, i) => {
+    f.style.transition = 'none';
+    f.style.width = i < index ? '100%' : '0%';
+    f.offsetHeight;
+    f.style.transition = '';
+  });
+
+  media.classList.add('fading');
+
+  setTimeout(() => {
+    media.querySelectorAll('img, video, .story-tap-hint').forEach(el => el.remove());
+
+    if (item.type === 'image'){
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = '';
+      img.onerror = () => { img.style.opacity = '0'; };
+      media.insertBefore(img, media.firstChild);
+      media.classList.remove('fading');
+      startBarAnimation(index, 5000);
+    } else {
+      const video = document.createElement('video');
+      video.src = item.src;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.muted = true;
+      video.setAttribute('playsinline', '');
+      media.insertBefore(video, media.firstChild);
+      media.classList.remove('fading');
+
+      let timed = false;
+      const startVideoProgress = () => {
+        if (timed) return;
+        timed = true;
+        const dur = video.duration && isFinite(video.duration) ? video.duration * 1000 : 6000;
+        startBarAnimation(index, dur, () => video.currentTime / (video.duration || 1));
+      };
+
+      video.addEventListener('loadedmetadata', startVideoProgress);
+      video.addEventListener('canplay', startVideoProgress);
+      video.addEventListener('ended', () => nextStory());
+
+      storyState.videoFallbackTimer = setTimeout(() => {
+        if (!timed) startBarAnimation(index, 6000);
+      }, 1500);
+    }
+
+    if (isFirst){
+      const hint = document.createElement('div');
+      hint.className = 'story-tap-hint';
+      hint.textContent = 'tap right to go forward';
+      media.appendChild(hint);
+      setTimeout(() => { try { hint.remove(); } catch(e){} }, 4200);
+    }
+  }, 200);
+}
+
+function startBarAnimation(index, duration, getProgress){
+  const fill = document.querySelectorAll('.story-bar .story-fill')[index];
+  if (!fill) return;
+
+  if (getProgress){
+    const start = performance.now();
+    const tick = () => {
+      const v = document.querySelector('#storyMedia video');
+      if (v && v.duration && isFinite(v.duration)){
+        fill.style.width = ((v.currentTime / v.duration) * 100).toFixed(1) + '%';
+      } else {
+        const pct = Math.min(100, ((performance.now() - start) / duration) * 100);
+        fill.style.width = pct + '%';
+      }
+      if (!document.getElementById('storyViewer').classList.contains('show')) return;
+      storyState.rafId = requestAnimationFrame(tick);
+    };
+    storyState.rafId = requestAnimationFrame(tick);
+    return;
+  }
+
+  const start = performance.now();
+  const tick = (now) => {
+    const pct = Math.min(100, ((now - start) / duration) * 100);
+    fill.style.width = pct + '%';
+    if (pct < 100){
+      storyState.rafId = requestAnimationFrame(tick);
+    } else {
+      nextStory();
+    }
+  };
+  storyState.rafId = requestAnimationFrame(tick);
+}
+
+function nextStory(e){
+  if (e) e.stopPropagation();
+  if (storyState.index + 1 >= storyState.highlight.items.length){
+    closeStory();
+    return;
+  }
+  showItem(storyState.index + 1);
+}
+
+function prevStory(e){
+  if (e) e.stopPropagation();
+  if (storyState.index === 0){
+    showItem(0);
+    return;
+  }
+  showItem(storyState.index - 1);
+}
+
+function renderReactions(){
+  document.querySelectorAll('.story-reaction').forEach(btn => {
+    const key = btn.dataset.key;
+    const count = storyReactions[key] || 0;
+    const badge = btn.querySelector('.r-count');
+    badge.textContent = count;
+    if (count > 0) badge.classList.add('show');
+    else badge.classList.remove('show');
+    btn.classList.remove('reacted');
+  });
+}
+
+(function attachReactions(){
+  document.querySelectorAll('.story-reaction').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.dataset.key;
+      storyReactions[key] = (storyReactions[key] || 0) + 1;
+
+      const badge = btn.querySelector('.r-count');
+      badge.textContent = storyReactions[key];
+      badge.classList.add('show');
+
+      btn.classList.remove('reacted');
+      void btn.offsetWidth;
+      btn.classList.add('reacted');
+
+      const media = document.getElementById('storyMedia');
+      const rect = btn.getBoundingClientRect();
+      const mediaRect = media.getBoundingClientRect();
+      const emoji = btn.textContent.trim().slice(0, 2) || '❤️';
+      const span = document.createElement('span');
+      span.className = 'story-float-emoji';
+      span.textContent = emoji.replace(/[0-9]/g, '');
+      span.style.left = (rect.left - mediaRect.left + rect.width / 2) + 'px';
+      span.style.top = (rect.top - mediaRect.top) + 'px';
+      span.style.bottom = 'auto';
+      media.appendChild(span);
+      setTimeout(() => span.remove(), 1400);
+    });
+  });
+})();
+
+document.addEventListener('keydown', (e) => {
+  const viewer = document.getElementById('storyViewer');
+  if (!viewer || !viewer.classList.contains('show')) return;
+  if (e.key === 'Escape') closeStory();
+  if (e.key === 'ArrowRight') nextStory();
+  if (e.key === 'ArrowLeft') prevStory();
+});
+
+buildHighlights();
+</script>
+
+</body>
+</html>
